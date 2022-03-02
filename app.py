@@ -30,4 +30,4 @@ def thankyou():
     return render_template("thankyou.html")
 
 
-app.run(port=3000, debug=True)
+app.run(port=3000)
