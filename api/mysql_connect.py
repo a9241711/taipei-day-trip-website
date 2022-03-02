@@ -13,5 +13,6 @@ try:
         password=os.getenv("SERVER_PASSWORD"),
         database=os.getenv("SERVER_DATABASE"),
         charset="utf8")
+
 except Error as e:
     print("Error while connecting to MySQL using Connection pool ", e)

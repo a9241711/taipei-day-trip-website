@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from mysql_connect import connection_pool
+from .mysql_connect import connection_pool
 
 api_attraction = Blueprint("api_attraction", __name__)
 
