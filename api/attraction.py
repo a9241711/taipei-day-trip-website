@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from .mysql_connect import connection
+from .mysql_connect import connect
 
 api_attraction = Blueprint("api_attraction", __name__)
 
@@ -7,9 +7,9 @@ api_attraction = Blueprint("api_attraction", __name__)
 @api_attraction.route("/attractions", methods=["GET"])
 def getAttractions():
     attractionList = []
-    mysqlConnection = connection()
-    get_connection = mysqlConnection.get_connection()
-    mycursor = get_connection.cursor()
+    mysqlConnection = connect()
+    # get_connection = mysqlConnection.get_connection()
+    mycursor = mysqlConnection.cursor()
     keyword = request.args.get("keyword", "")  # 抓取關鍵字
     page = request.args.get("page", "0")
     if not page:  # 如果沒有page則回傳錯誤
@@ -27,7 +27,7 @@ def getAttractions():
             val = ("%"+keyword+"%", pageStart, pageInterval)  # print(val)
         mycursor.execute(attractionsNumber, val)  # 執行cursor()
         attractionResults = mycursor.fetchall()  # 撈取SQL資料
-        get_connection.close()  # 關閉connection pool
+        mysqlConnection.close()  # 關閉connection pool
         if not attractionResults:
             return jsonify({"error": True, "message": "伺服器內部錯誤"})
         for attractionResult in attractionResults:  # 把景點結果放入for迴圈
@@ -57,13 +57,13 @@ def getAttractions():
 
 @api_attraction.route("/attraction/<id>", methods=["GET"])
 def attraction(id):
-    mysqlConnection = connection()
-    get_connection = mysqlConnection.get_connection()
-    mycursor = get_connection.cursor()
+    mysqlConnection = connect()
+    # get_connection = mysqlConnection.get_connection()
+    mycursor = mysqlConnection.cursor()
     attractionId = "SELECT * from attraction where id =%s" % (id)
     mycursor.execute(attractionId)
     attractionFind = mycursor.fetchone()
-    get_connection.close()  # 關閉connection pool
+    mysqlConnection.close()  # 關閉connection pool
     try:
         if attractionFind:
             # print(attractionData)
