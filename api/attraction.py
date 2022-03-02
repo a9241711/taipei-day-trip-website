@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from .mysql_connect import connection_pool
+from .mysql_connect import connection
 
 api_attraction = Blueprint("api_attraction", __name__)
 
@@ -7,7 +7,8 @@ api_attraction = Blueprint("api_attraction", __name__)
 @api_attraction.route("/attractions", methods=["GET"])
 def getAttractions():
     attractionList = []
-    get_connection = connection_pool.get_connection()
+    mysqlConnection = connection()
+    get_connection = mysqlConnection.get_connection()
     mycursor = get_connection.cursor()
     keyword = request.args.get("keyword", "")  # 抓取關鍵字
     page = request.args.get("page", "0")
@@ -56,7 +57,8 @@ def getAttractions():
 
 @api_attraction.route("/attraction/<id>", methods=["GET"])
 def attraction(id):
-    get_connection = connection_pool.get_connection()
+    mysqlConnection = connection()
+    get_connection = mysqlConnection.get_connection()
     mycursor = get_connection.cursor()
     attractionId = "SELECT * from attraction where id =%s" % (id)
     mycursor.execute(attractionId)
