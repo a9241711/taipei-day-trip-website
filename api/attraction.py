@@ -1,15 +1,34 @@
+from dotenv import load_dotenv
+from mysql.connector import Error, pooling
+import os
 from flask import Blueprint, jsonify, request
-from .mysql_connect import connect
+# from .mysql_connect import connect
 
 api_attraction = Blueprint("api_attraction", __name__)
+
+load_dotenv()
+
+try:
+    connection_pool = pooling.MySQLConnectionPool(
+        pool_name="mysql",
+        pool_size=20,
+        pool_reset_session=True,
+        host="localhost",
+        user=os.getenv("SERVER_USER"),
+        password=os.getenv("SERVER_PASSWORD"),
+        database=os.getenv("SERVER_DATABASE"),
+        charset="utf8")
+
+except Error as e:
+    print("Error while connecting to MySQL using Connection pool ", e)
 
 
 @api_attraction.route("/attractions", methods=["GET"])
 def getAttractions():
     attractionList = []
-    mysqlConnection = connect()
+    connection = connection_pool.get_connection()
     # get_connection = mysqlConnection.get_connection()
-    mycursor = mysqlConnection.cursor()
+    mycursor = connection.cursor()
     keyword = request.args.get("keyword", "")  # 抓取關鍵字
     page = request.args.get("page", "0")
     if not page:  # 如果沒有page則回傳錯誤
@@ -27,7 +46,7 @@ def getAttractions():
             val = ("%"+keyword+"%", pageStart, pageInterval)  # print(val)
         mycursor.execute(attractionsNumber, val)  # 執行cursor()
         attractionResults = mycursor.fetchall()  # 撈取SQL資料
-        mysqlConnection.close()  # 關閉connection pool
+        connection.close()  # 關閉connection pool
         if not attractionResults:
             return jsonify({"error": True, "message": "伺服器內部錯誤"})
         for attractionResult in attractionResults:  # 把景點結果放入for迴圈
@@ -57,13 +76,13 @@ def getAttractions():
 
 @api_attraction.route("/attraction/<id>", methods=["GET"])
 def attraction(id):
-    mysqlConnection = connect()
+    connection = connection_pool.get_connection()
     # get_connection = mysqlConnection.get_connection()
-    mycursor = mysqlConnection.cursor()
+    mycursor = connection.cursor()
     attractionId = "SELECT * from attraction where id =%s" % (id)
     mycursor.execute(attractionId)
     attractionFind = mycursor.fetchone()
-    mysqlConnection.close()  # 關閉connection pool
+    connection.close()  # 關閉connection pool
     try:
         if attractionFind:
             # print(attractionData)
