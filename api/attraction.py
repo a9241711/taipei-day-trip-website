@@ -1,7 +1,4 @@
-from ntpath import join
-import re
 from flask import Blueprint, jsonify, request
-from sqlalchemy import column, null
 from mysql_connect import connection_pool
 
 api_attraction = Blueprint("api_attraction", __name__)

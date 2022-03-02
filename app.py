@@ -1,4 +1,3 @@
-from re import T
 from flask import *
 from api.attraction import api_attraction
 
