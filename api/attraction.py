@@ -1,19 +1,19 @@
+from .mysql_connect import connection_pool
 from flask import Blueprint, jsonify, request
 import os
 import mysql.connector.pooling
 from dotenv import load_dotenv
 load_dotenv()
-# from .mysql_connect import connect
 
-connection_pool = mysql.connector.pooling.MySQLConnectionPool(
-    pool_name="mysql",
-    pool_size=20,
-    pool_reset_session=True,
-    host="localhost",
-    user=os.getenv("SERVER_USER"),
-    password=os.getenv("SERVER_PASSWORD"),
-    database=os.getenv("SERVER_DATABASE"),
-    charset="utf8")
+# connection_pool = mysql.connector.pooling.MySQLConnectionPool(
+#     pool_name="mysql",
+#     pool_size=20,
+#     pool_reset_session=True,
+#     host="localhost",
+#     user=os.getenv("SERVER_USER"),
+#     password=os.getenv("SERVER_PASSWORD"),
+#     database=os.getenv("SERVER_DATABASE"),
+#     charset="utf8")
 
 
 api_attraction = Blueprint("api_attraction", __name__)
