@@ -1,7 +1,11 @@
 from flask import *
+from api.attraction import api_attraction
+
+
 app = Flask(__name__)
 app.config["JSON_AS_ASCII"] = False
 app.config["TEMPLATES_AUTO_RELOAD"] = True
+app.register_blueprint(api_attraction, url_prefix="/api")
 
 # Pages
 
@@ -26,4 +30,5 @@ def thankyou():
     return render_template("thankyou.html")
 
 
-app.run(port=3000)
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=3000)
