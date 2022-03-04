@@ -26,7 +26,7 @@ def getAttractions():
         attractionsNumber = "SELECT * from attraction LIMIT %s,%s"  # 抓取資料的數字區間
         val = (pageStart, pageInterval)  # print(val)
         if keyword:  # 如果有關鍵字，則增加關鍵字搜尋條件
-            attractionsNumber = '''SELECT * from attraction WHERE name LIKE %s LIMIT %s,%s'''
+            attractionsNumber = "SELECT * from attraction WHERE name LIKE %s LIMIT %s,%s"
             val = ("%"+keyword+"%", pageStart, pageInterval)  # print(val)
         mycursor.execute(attractionsNumber, val)  # 執行cursor()
         attractionResults = mycursor.fetchall()  # 撈取SQL資料
@@ -47,7 +47,7 @@ def getAttractions():
         else:  # 如果不小於12，表示有下一頁
             print(len(attractionList))
             response = {  
-                "nextPage": intPage+1,  # 數量==12則表示有下一頁
+                "nextPage": intPage+1,  # 如果不小於12，表示有下一頁
                 "data": attractionList
                 }
             return jsonify(response)
@@ -62,7 +62,7 @@ def getAttractions():
 def attraction(attractionId):
     mysqlConnection = connection_pool.get_connection()  # 連結connection pool
     mycursor = mysqlConnection.cursor()  # f開啟cursor
-    findAttractionId = "SELECT * from attraction where id =%s" % (attractionId)  # SQL指令
+    findAttractionId = "SELECT * from attraction where id =%s " % (attractionId)  # SQL指令
     mycursor.execute(findAttractionId)  # 執行SQL指令
     attractionFind = mycursor.fetchone()  # 只須回傳一筆
     # print(attractionFind)
@@ -72,7 +72,8 @@ def attraction(attractionId):
             attractionList=list(attractionFind) #轉乘list
             attractionList[9]=json.loads(attractionList[9])#將img圖片字串轉回list
             attractionData = dict(zip(mycursor.column_names, attractionList))
-            return jsonify(attractionData)
+            response={"data":attractionData}
+            return jsonify(response)
         else:  # 如果沒找到則回傳失敗
             return jsonify({
                 "error": True,
