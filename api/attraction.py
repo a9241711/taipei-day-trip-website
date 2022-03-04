@@ -72,7 +72,7 @@ def attraction(attractionId):
             attractionList=list(attractionFind) #轉乘list
             attractionList[9]=json.loads(attractionList[9])#將img圖片字串轉回list
             attractionData = dict(zip(mycursor.column_names, attractionList))
-            return jsonify(attractionData, 200)
+            return jsonify(attractionData)
         else:  # 如果沒找到則回傳失敗
             return jsonify({
                 "error": True,
