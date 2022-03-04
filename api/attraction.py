@@ -1,7 +1,7 @@
 from .mysql_connect import connection_pool
 from flask import Blueprint, jsonify, request
 from dotenv import load_dotenv
-import re
+import re,json
 
 load_dotenv()
 
@@ -34,22 +34,21 @@ def getAttractions():
         if not attractionResults:
             return jsonify({"error": True, "message": "伺服器內部錯誤"})
         for attractionResult in attractionResults:  # 把景點結果放入for迴圈
-            # 轉換成dict，並zip結合兩個list
-            arractionData = dict(zip(mycursor.column_names, attractionResult))
+            attractionResultList=list(attractionResult)
+            attractionResultList[9]=json.loads(attractionResultList[9])##將img圖片字串轉回list
+            arractionData = dict(zip(mycursor.column_names, attractionResultList))# 轉換成dict，並zip結合
             attractionList.append(arractionData)  # 把dict append回去空List
-        if len(attractionResults) < 12:  # 如果搜尋結果小於12筆，表示沒有下一頁
+        if len(attractionList) < 12:  # 如果搜尋結果小於12筆，表示沒有下一頁
+            # print(len(attractionList))
             response = {
                 "nextPage": None,
                 "data": attractionList}
             return jsonify(response)  # print(response)
-        if len(attractionResults) == 12:  # 如果搜尋結果等於12筆，表示有下一頁
-            for attractionResult in attractionResults:
-                arractionData = dict(
-                    zip(mycursor.column_names, attractionResult))
-                attractionList.append(arractionData)  # 把資料append到List
-                response = {  # print(response)
-                    "nextPage": intPage+1,  # 數量==12則表示有下一頁
-                    "data": attractionList
+        else:  # 如果不小於12，表示有下一頁
+            print(len(attractionList))
+            response = {  
+                "nextPage": intPage+1,  # 數量==12則表示有下一頁
+                "data": attractionList
                 }
             return jsonify(response)
     except Exception as e:
@@ -59,18 +58,20 @@ def getAttractions():
 
 # 依據景點ID回傳對應資訊
 
-@api_attraction.route("/attraction/<id>", methods=["GET"])
-def attraction(id):
+@api_attraction.route("/attraction/<attractionId>", methods=["GET"])
+def attraction(attractionId):
     mysqlConnection = connection_pool.get_connection()  # 連結connection pool
     mycursor = mysqlConnection.cursor()  # f開啟cursor
-    attractionId = "SELECT * from attraction where id =%s" % (id)  # SQL指令
-    mycursor.execute(attractionId)  # 執行SQL指令
+    findAttractionId = "SELECT * from attraction where id =%s" % (attractionId)  # SQL指令
+    mycursor.execute(findAttractionId)  # 執行SQL指令
     attractionFind = mycursor.fetchone()  # 只須回傳一筆
+    # print(attractionFind)
     mysqlConnection.close()  # 關閉connection
     try:
         if attractionFind:  # 如果找到景點資料
-            # print(attractionData)
-            attractionData = dict(zip(mycursor.column_names, attractionFind))
+            attractionList=list(attractionFind) #轉乘list
+            attractionList[9]=json.loads(attractionList[9])#將img圖片字串轉回list
+            attractionData = dict(zip(mycursor.column_names, attractionList))
             return jsonify(attractionData, 200)
         else:  # 如果沒找到則回傳失敗
             return jsonify({
