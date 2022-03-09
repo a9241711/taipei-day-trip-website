@@ -173,7 +173,7 @@ function hideEffect(){
     let footer = document.querySelector(".footer");
     divLoader.style.display="none";
     loader.style.display="none";
-    footer.style.display="block";
+    footer.style.display="flex";
 }
 
 //練習用append加入網頁元素，可忽略//
