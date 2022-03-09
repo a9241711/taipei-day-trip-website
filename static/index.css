@@ -7,14 +7,18 @@ body{
 }
 /* 載入中動畫 */
 .div-loader{
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  position: fixed;
+  background-color: white;
+  height: 100vh;
+  width: 100%;
+  z-index: 99;
 }
 .loader {
     position: fixed;
-    /* left: 50%;*/
-    top: 50%; 
+    left: 0;
+    top: 0; 
+    right: 0;
+    bottom: 0;
     border: 16px solid #c7c7c7;
     border-radius: 50%;
     border-top: 16px solid #3498db;
@@ -23,6 +27,7 @@ body{
     -webkit-animation: spin 2s linear infinite; /* Safari */
     animation: spin 2s linear infinite;
     z-index: 100;
+    margin: auto;
   }
   
   /* Safari */
@@ -49,7 +54,7 @@ header{
     display: flex;
     justify-content: center;
     background-color: #FFFFFF;
-    z-index: 99;
+    z-index: 100;
     overflow: hidden;
 }
 .header-content {

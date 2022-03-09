@@ -126,7 +126,7 @@ searchBtn.addEventListener("click",async ()=>{
 
 //***Endless Scroll function***//
 let footer =document.querySelector(".footer")
-document.addEventListener("DOMContentLoaded",()=>{
+// document.addEventListener("DOMContentLoaded",()=>{
     //設定intersectionObserver載入更多data若footer可見
     let option={
         root:null,
@@ -135,9 +135,10 @@ document.addEventListener("DOMContentLoaded",()=>{
     };
     //callback function，操控IntersectionObserver
     function handleIntersect(entries){
+        console.log(entries[0].intersectionRatio)
         if(page==null){
             return
-        }
+        }if(entries[0].intersectionRatio <= 0) return;
         else{
             if(entries[0].isIntersecting){
                 showAttraction();     
@@ -150,7 +151,7 @@ document.addEventListener("DOMContentLoaded",()=>{
     if(page !=null){//若page不等於null，判斷是否footer已進入可見範圍，並執行showAttraction
     observer.observe(footer);
     }
-});
+// });
 
 //remove不需要的景點
 function removeAttraction(){
@@ -158,13 +159,21 @@ function removeAttraction(){
 }
 //開啟載入中動畫
 function showEffect(){
+    let divLoader=document.querySelector(".div-loader")
     let loader = document.querySelector(".loader");
+    let footer = document.querySelector(".footer");
+    divLoader.style.display="block";
     loader.style.display="block";
+    footer.style.display="none";
 }
 //關閉載入中動畫
 function hideEffect(){
+    let divLoader=document.querySelector(".div-loader")
     let loader = document.querySelector(".loader");
+    let footer = document.querySelector(".footer");
+    divLoader.style.display="none";
     loader.style.display="none";
+    footer.style.display="block";
 }
 
 //練習用append加入網頁元素，可忽略//
