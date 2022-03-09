@@ -1,0 +1,394 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&family=Noto+Sans:wght@400;700&display=swap');
+
+body{
+    background-color: white;
+    margin: 0 auto;
+    font-family: "Noto Sans TC", Georgia, Times, 'Times New Roman', serif;
+    font-size: 16px;
+}
+/* 載入中動畫 */
+.loader {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    border: 16px solid #c7c7c7;
+    border-radius: 50%;
+    border-top: 16px solid #3498db;
+    width: 120px;
+    height: 120px;
+    -webkit-animation: spin 2s linear infinite; /* Safari */
+    animation: spin 2s linear infinite;
+    z-index: 100;
+  }
+  
+  /* Safari */
+  @-webkit-keyframes spin {
+    0% { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); }
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+/* 導覽列 */
+header{
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    position: fixed;
+    width: 100%;
+    height: 54px;
+    left: 0px;
+    top: 0px;
+    display: flex;
+    justify-content: center;
+    background-color: #FFFFFF;
+    z-index: 99;
+    overflow: hidden;
+}
+.header-content {
+    width: 1200px;
+    height: 34px;
+    top: 0;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: auto ;
+    padding: 0;
+  }
+.header-title{
+    width: 100%;
+    height: 34px;
+}
+.header-title a{
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 30px;
+    line-height: 34px;
+    /* identical to box height, or 113% */
+    /* Cyan 800 */
+    color: #448899;
+}
+.header-nav{
+    width: 100%;
+    height: 34px;
+    display: flex;
+    justify-content: flex-end;
+}
+.header-nav a{
+    text-decoration: none;
+    font-weight: 400;
+    line-height: 34px;
+    color: #666666;
+    margin: 0 5px;
+}
+.header-nav a:hover{
+    color: #448899;
+}
+
+/* 主Banner頁 */
+.slogan{
+    width: 100%;
+    height: 320px;
+    background: linear-gradient(135deg, #AADDEE 0%, #66AABB 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    margin: 54px auto 0 ;
+  }
+  .slogan-content {
+    position: relative;
+    display: flex;
+    width: 1180px;
+    height: 169px;
+    margin:10px;;
+    align-items: flex-start;
+    z-index: 98;
+  }
+  .slogan-content .slogan-txt{
+      display: flex;
+      width: 100%;
+      height: 78px;
+      align-items: center;
+      position: absolute;
+      top: 0;
+      left: 0;
+  }
+  .slogan-content .slogan-txt h1{
+    position: absolute;
+    width: 100%;
+    height: 41px;
+    left: 0px;
+    top: 0px;
+    font-weight: 700;
+    font-size: 28px;
+    line-height: 41px;
+    color: #F8F8F8;
+    text-shadow: 0px 0px 30px #AABBCC;
+  }
+  .slogan-content .slogan-txt p{
+    position: absolute;
+    width: 100%;
+    height: 22px;
+    left: 0px;
+    top: 56px;
+    font-weight: 400;
+    line-height: 22px;
+    color: #F8F8F8;
+  }
+  .slogan-content .slogan-input{
+    width: 400px;
+    height: 46px;
+    background-color: white;
+    position: relative;
+    display: flex;
+    top: 100px;
+    border-radius: 0.5rem;
+    margin: 15px 0;
+}
+
+.slogan-content .slogan-input .input-text{
+    position: relative;
+    left: 15px;
+    top: 15px;
+    width: 200px;
+    height: 16px;
+    
+}
+.slogan-content .slogan-input .input-text input{
+    outline: none;
+    border: none;
+    vertical-align:text-top;
+    font-weight: 700;
+    
+}
+.slogan-content .slogan-input .slogan-btn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    width: 60px;
+    height: 100%;
+    top: 0px;
+    right: 0px;
+    background: #448899;
+    border-radius: 0 0.5rem 0.5rem 0;
+    border:none;
+}
+.slogan-content .slogan-input .slogan-btn:hover{
+    cursor: pointer;
+}
+.slogan-img{
+    position:absolute;
+    right: 0;
+    height: 100%;
+}
+.slogan-img img{
+    position: relative;
+    right: 10%;
+    bottom: 0;
+}
+
+/* 主內容頁 */
+ main{
+    margin: 100px auto;
+    width: 1200px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: auto;
+    align-items: flex-start;
+    overflow: hidden;
+}
+main .main-content{
+    display: flex;
+    width: 270px;
+    margin:0 auto 30px;
+    padding: 0 ;
+    flex-direction: column;
+    background: #FFFFFF;
+    border-radius: 5px;
+    border: 1px solid #E8E8E8;
+    justify-content: space-between;
+}
+main .main-content .attractionImg{
+    width: 100%;
+    height: 160px;
+    border-radius: 5px 5px 0 0;
+    object-fit:cover;
+}
+main .main-content .attractionTitle{
+    width: 90%;
+    height: 22px;
+    font-weight: 700;
+    font-size: 1rem;
+    line-height: 22px;
+    /* Gray 700 */
+    color: #757575;
+    margin: 10px auto;
+}
+
+main .main-content .txt{
+    display: flex;
+    justify-content: space-between;
+    width: 90%;
+    /* Body - Reg 16(13.3) */
+    font-weight: 400;
+    /* Gray 700 */
+    color: #757575;
+    margin: 15px auto 5px;
+}
+main .main-content .txt p{
+    line-height: 20px;
+    height: 20px;
+    margin: 0;
+}
+/* 關鍵字搜尋無結果時顯示文字 */
+.noPage{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+.noPage p{
+    font-weight: 700;
+    color: #448899;
+}
+/* 頁尾 */
+footer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    background: #757575;
+  }
+  footer p{
+    font-weight: 700;
+    color: #FFFFFF;
+  }
+
+/* 平板畫面 */
+@media (min-width: 601px) and (max-width: 1200px){
+.header-content {
+      width: 100%;
+      top: 0;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: auto ;
+      padding: 0;
+    }
+main{
+      margin: 20px auto;
+      width: 100%;
+      display: grid;
+      grid-template-columns:  1fr 1fr;;
+      grid-template-rows: auto;
+      align-items: flex-start;
+      /* overflow: hidden; */
+  }
+main .main-content{
+      display: flex;
+      width: 90%;
+      margin:0 auto 30px;
+      padding: 0 ;
+      flex-direction: column;
+      background: #FFFFFF;
+      border-radius: 5px;
+      border: 1px solid #E8E8E8;
+      justify-content: space-between;
+  }
+  
+main .main-content .attractionImg {
+  width: 100%;
+  height: 200px;
+  border-radius: 5px 5px 0 0;
+  object-fit: cover;
+
+  }
+
+}
+/* 手機畫面 */
+@media (min-width: 360px) and (max-width: 600px) {
+.header-content {
+      width: 100%;
+      /* height: 34px; */
+      top: 0;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: auto ;
+      padding: 0;
+    }
+.slogan{
+      width: 100%;
+      /* height: 320px; */
+      background: linear-gradient(135deg, #AADDEE 0%, #66AABB 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      margin: 54px auto  ;
+      overflow: hidden;
+    }
+.slogan-content {
+      position: relative;
+      display: flex;
+      width: 90%;
+      margin:10px;;
+      align-items: flex-start;
+      z-index: 98;
+    }
+  
+.slogan-content .slogan-input{
+      width: 70%;
+      background-color: white;
+      position: relative;
+      display: flex;
+      top: 100px;
+      border-radius: 0.5rem;
+  }
+.slogan-img {
+      position: absolute;
+      width: 100%;
+  }
+.slogan-img img {
+      position: absolute;
+      right: -30%;
+      width: 100%;
+      bottom: 0;
+  }
+main{
+      margin: 20px auto;
+      width: 90%;
+      display: grid;
+      grid-template-columns:  1fr;
+      grid-template-rows: auto;
+      align-items: flex-start;
+  }
+main .main-content{
+      display: flex;
+      width: 100%;
+      margin:0 auto 30px;
+      padding: 0 ;
+      flex-direction: column;
+      background: #FFFFFF;
+      border-radius: 5px;
+      border: 1px solid #E8E8E8;
+      justify-content: space-between;
+  }
+  
+main .main-content .attractionImg {
+  width: 100%;
+  border-radius: 5px 5px 0 0;
+  object-fit: cover;
+  height: auto;
+  }
+}
