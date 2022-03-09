@@ -252,11 +252,9 @@ main .main-content .txt p{
 }
 /* 關鍵字搜尋無結果時顯示文字 */
 .noPage{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
     width: 100%;
+    height: 50px;
+    padding: 20px;
 }
 .noPage p{
     font-weight: 700;

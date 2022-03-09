@@ -113,6 +113,7 @@ searchBtn.addEventListener("click",async ()=>{
     }else{//若無法順利找到景點，則顯示無法找到景點的文字
         removeAttraction();
         let notFoundAttraction =document.createElement("p");
+        notFoundAttraction.classList.add("noPage");
         notFoundAttraction.textContent="查無景點";
         main.appendChild(notFoundAttraction);
         page=null;
