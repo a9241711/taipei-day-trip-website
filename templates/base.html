@@ -8,7 +8,9 @@
     <link rel="stylesheet" href="./static/index.css" >
 </head>
 <body>
+  <div class="div-loader">
   <div class="loader"></div>
+  </div>
         <header >
           <div class="header-content">
           <div class="header-title"><a href="#">台北一日遊</a> </div>
@@ -40,6 +42,7 @@
           
         </div>
         <main class="main">
+          {%block main%}{% endblock %}
           <!-- <div class="main-content">
                 <img class="attractionImg" src="https://picsum.photos/300/200/?random=10">
               <h1 class="attractionTitle">景點標題</h1>

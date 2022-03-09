@@ -1,19 +1,28 @@
 //***變數設定***//
 let page =0;
-let keyword="";
+let keyword=""
 const searchBtn=document.querySelector(".slogan-btn");
 const loader = document.querySelector(".loader");
 const main=document.querySelector(".main");
-//***fetch景點資訊***//
-async function getData(){
+
+//***fetch景點資訊url，page+keyword***//
+async function getPageData(page,keyword){
     try{
         let response = await fetch(`/api/attractions?page=${page}&keyword=${keyword}`);
-        let data = response.json();
-        return data;
+        if(response.ok){
+            let data= await response.json();
+            // console.log("data",data)
+            return data
+        }else{
+            let error= await response.json();
+            // console.log("data",data)
+            return error
+        }
     }
-    catch(e) {
-        console.log(e);
-    }
+    catch(message){
+        console.log(`${message}`);
+        throw Error("Fetching was wrong");    
+        } 
 }
 
 //***根據page取得景點資訊***//
@@ -21,11 +30,11 @@ async function showAttraction(){
     //開啟載入中動畫
     showEffect();
     //fetch資料
-    let attractions = await getData();
-    let attractionData=attractions["data"];
-    let nextPage =attractions["nextPage"];   
+    let attractions = await getPageData(page,keyword);// console.log("attractions",attractions,"attractionpage",page)
+    if(attractions["error"]!=true){
+        let attractionData=attractions["data"];
+        page =attractions["nextPage"];   
     for (let i=0;i<attractionData.length;i++){
-
          //Attrraction Value
         let attractionTitleValue=attractionData[i]["name"]//景點名稱
         let attractionTransValue=attractionData[i]["mrt"]//景點交通
@@ -43,29 +52,38 @@ async function showAttraction(){
             <p class="attractionCate">${attractionCateValue}</p>
         </div>`
         main.appendChild(mainContent);
+        //關閉載入中動畫
+        hideEffect();
+    } 
+    }else{
+        //若無法順利找到景點，則顯示無法找到景點的文字
+        removeAttraction();
+        let notFoundAttraction =document.createElement("p");
+        notFoundAttraction.textContent="查無景點";
+        main.appendChild(notFoundAttraction);
+        page=null;
+        //關閉載入中動畫
+        hideEffect();
     }
-    //紀錄page的頁數
-    page=nextPage;
-    //關閉載入中動畫
-    hideEffect()
 }
 
 //***關鍵字搜尋景點function***//
 searchBtn.addEventListener("click",async ()=>{
     //取得使用者輸入的值
     let searchValue=document.querySelector(".search").value;
-    page=0;
+    let keywordPage=0;
     keyword=searchValue;
-    //根據keyword Fetch資料
-    let keywordAttractions = await getData();
+    //根據keyword Fetch資料console.log("keywordPage",keywordPage)
+    let keywordAttractions = await getPageData(keywordPage,keyword);
     //紀錄是否有response錯誤訊息，用來判斷是否查無相關景點
-    let responseError=keywordAttractions["error"]
     let keywordData=keywordAttractions["data"];
-    //紀錄keyword的nextpage
-    let keywordNextPage =keywordAttractions["nextPage"];   
-
+       
     //若無response錯誤訊息，表示成功取得景點資訊，顯示景點內容
-    if(responseError!=true){ 
+    if(keywordAttractions["error"]!=true){ 
+        //紀錄keyword的nextpage
+        let keywordNextPage =keywordAttractions["nextPage"];
+        //紀錄page的頁數console.log("keywordpage",page)
+        page=keywordNextPage;
         //開啟載入中動畫
         showEffect();
         //移除頁面中的內容
@@ -97,9 +115,11 @@ searchBtn.addEventListener("click",async ()=>{
         let notFoundAttraction =document.createElement("p");
         notFoundAttraction.textContent="查無景點";
         main.appendChild(notFoundAttraction);
+        page=null;
+        //關閉載入中動畫
+        hideEffect();
     }
-    //紀錄page的頁數
-    page=keywordNextPage;
+    
 
 })
 
@@ -112,21 +132,23 @@ document.addEventListener("DOMContentLoaded",()=>{
         rootMargin: "0px", //用來擴大或者縮小視窗的的大小
         threshold:0.1 //當觀察footer 10%時候就會觸發handleIntersect callback
     };
-    const observer=new IntersectionObserver(handleIntersect,option);
-    //觀察指定區域
-    observer.observe(footer);
     //callback function，操控IntersectionObserver
     function handleIntersect(entries){
-        if (page ==null){//如果page==null就解除觀察footer元素
-            observer.unobserve(footer);
-            observer.disconnect();
-            }
-        else{//若page不等於null，判斷是否footer已進入可見範圍，並執行showAttraction
+        if(page==null){
+            return
+        }
+        else{
             if(entries[0].isIntersecting){
                 showAttraction();     
-                }  
-            }
+                    }  
         }
+    }
+    //建構IntersectionObserver
+    const observer=new IntersectionObserver(handleIntersect,option);
+    //觀察指定區域
+    if(page !=null){//若page不等於null，判斷是否footer已進入可見範圍，並執行showAttraction
+    observer.observe(footer);
+    }
 });
 
 //remove不需要的景點
@@ -144,7 +166,7 @@ function hideEffect(){
     loader.style.display="none";
 }
 
-//練習用append加入網頁元素
+//練習用append加入網頁元素，可忽略//
 // let getData=function(){
 //     let url = `http://localhost:3000/api/attractions?page=${page}&keyword=${keyword}`
 //     fetch(url).then((response)=>{

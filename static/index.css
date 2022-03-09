@@ -1,16 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&family=Noto+Sans:wght@400;700&display=swap');
 
 body{
-    background-color: white;
     margin: 0 auto;
     font-family: "Noto Sans TC", Georgia, Times, 'Times New Roman', serif;
     font-size: 16px;
 }
 /* 載入中動畫 */
+.div-loader{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .loader {
     position: fixed;
-    left: 50%;
-    top: 50%;
+    /* left: 50%;*/
+    top: 50%; 
     border: 16px solid #c7c7c7;
     border-radius: 50%;
     border-top: 16px solid #3498db;
