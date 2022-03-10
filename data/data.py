@@ -6,9 +6,9 @@ from dotenv import load_dotenv
 load_dotenv()
 mydb = mysql.connector.connect(
     host="localhost",
-    user="root",
-    password=os.getenv("PASSWORD"),
-    database="taipei",
+    user=os.getenv("SERVER_USER"),
+    password=os.getenv("SERVER_PASSWORD"),
+    database=os.getenv("SERVER_DATABASE"),
 )
 
 mycursor = mydb.cursor()
@@ -51,10 +51,10 @@ with open('taipei-attractions.json', 'r', encoding="utf-8") as jsonfile:
                 imageUrl = "http://" + imageUrl
                 imagesUrlList.append(imageUrl)
         imagesUrlListJson = json.dumps(imagesUrlList)  # 轉換成json字串
-        # print(imagesUrlListJson)
-        sql_data = ("INSERT INTO attraction (id, name, category, description, address, transport, mrt, latitude, longitude, images)"
-                    "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)")
-        mycursor.execute(sql_data, (id, name, category, description, address,
-                         transport, mrt, latitude, longitude, imagesUrlListJson))
+        print(imagesUrlListJson)
+        # sql_data = ("INSERT INTO attraction (id, name, category, description, address, transport, mrt, latitude, longitude, images)"
+        #             "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)")
+        # mycursor.execute(sql_data, (id, name, category, description, address,
+        #                  transport, mrt, latitude, longitude, imagesUrlListJson))
 
-        mydb.commit()
+        # mydb.commit()

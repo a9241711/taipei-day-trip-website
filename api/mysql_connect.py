@@ -6,7 +6,7 @@ load_dotenv()
 
 connection_pool = mysql.connector.pooling.MySQLConnectionPool(
     pool_name="mysql",
-    pool_size=20,
+    pool_size=32,
     pool_reset_session=True,
     host="localhost",
     user=os.getenv("SERVER_USER"),
