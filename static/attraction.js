@@ -37,8 +37,7 @@ function getIdData (){
     let introAddress =document.querySelector(".introAddress");
     let introTrans= document.querySelector(".introTrans");
     let divDot=document.querySelector(".div-dot");
-    // //取得fetch data
-    console.log(attractionId)
+    // //取得fetch data console.log(attractionId)
     let attractionImages=attractionId["data"]["images"];
     let attractionTitleValue=attractionId["data"]["name"];
     let attractionCateValue=attractionId["data"]["category"];
