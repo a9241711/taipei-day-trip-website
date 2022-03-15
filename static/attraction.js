@@ -98,11 +98,9 @@ async function showSlide(slideNumber){
         let dot =document.querySelectorAll(".dot")//取得所有.dot元素
         if(slideNumber>slide.length){//若slideNumber大於slide長度時，要回到第一個元素1
             slideIndex=1;
-            console.log("max",slideNumber);
         }
         if(slideNumber<1){//若slideNumber小於1時，要回到最大的元素
             slideIndex=slide.length;
-            console.log("min",slideNumber);
     }    for(i=0;i<slide.length;i++){
         slide[i].style.display="none";//把所有.slide元素都隱藏
     }   for(i=0;i<slide.length;i++){
