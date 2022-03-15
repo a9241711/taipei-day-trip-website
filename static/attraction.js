@@ -123,13 +123,30 @@ function selectTime(){
     selectedTime.textContent="新台幣"+timSelected+"元";
 }
 
+//開啟載入中動畫
+function showEffect(){
+    let divLoader=document.querySelector(".div-loader")
+    let loader = document.querySelector(".loader");
+    divLoader.style.display="block";
+    loader.style.display="block";
+}
+//關閉載入中動畫
+function hideEffect(){
+    let divLoader=document.querySelector(".div-loader")
+    let loader = document.querySelector(".loader");
+    divLoader.style.display="none";
+    loader.style.display="none";
+}
+
 //Controller區，操作function
 //畫面initial
 async function getInitail(){
+    showEffect()
     await getIdFetch();
     getIdData();
     showArrowElement();
     showSlide(slideIndex);
+    hideEffect()
 }
 
 //執行function

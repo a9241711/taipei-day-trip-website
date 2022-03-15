@@ -11,9 +11,7 @@ let attractions//取得景點資料變數
 async function getPageData(page,keyword){
     try{
         let response = await fetch(`/api/attractions?page=${page}&keyword=${keyword}`);
-        console.log("fetch",keyword,"response",response)
         let data= await response.json();
-            console.log("data",data)
         return attractions=data
         }
     catch(message){
@@ -25,10 +23,7 @@ async function getPageData(page,keyword){
 //View render畫面區
 //***根據page取得景點資訊***//
 function showAttraction(){
-    // //開啟載入中動畫
-    // showEffect();
     // //fetch資料
-    // console.log(attractions,"page",page,attractions["nextPage"])
     page =attractions["nextPage"];
     if(attractions["error"]!=true){
         let attractionData=attractions["data"];
@@ -54,8 +49,6 @@ function showAttraction(){
         </div>
         </a>`
         main.appendChild(mainContent);
-        // //關閉載入中動畫
-        // hideEffect();
         //設定flag為true
         ready=true;
     } 
@@ -75,10 +68,9 @@ function showAttraction(){
 
 //***關鍵字搜尋景點function***//
 function showKeywordAttraction(){
-    //若無response錯誤訊息，表示成功取得景點資訊，顯示景點內容
-    //紀錄是否有response錯誤訊息，用來判斷是否查無相關景點
+
     let keywordData=attractions["data"];
-    // console.log("keyword",attractions["data"])
+    //若無response錯誤訊息，表示成功取得景點資訊，顯示景點內容
     if(attractions["error"]!=true){ 
         //紀錄keyword的nextpage
         let keywordNextPage =attractions["nextPage"];
@@ -109,8 +101,6 @@ function showKeywordAttraction(){
            </div>
            </a>`
            main.appendChild(mainContent);
-            //關閉載入中動畫
-            //  hideEffect();
            //設定flag為true
            ready=true;
        }
@@ -121,8 +111,6 @@ function showKeywordAttraction(){
         notFoundAttraction.textContent="查無景點";
         main.appendChild(notFoundAttraction);
         page=null;
-        // //關閉載入中動畫
-        // hideEffect();
         //設定flag為true
         ready=true;
     }
@@ -165,7 +153,6 @@ function removeAttraction(){
 }
 //開啟載入中動畫
 function showEffect(){
-    console.log("showeffect");
     let divLoader=document.querySelector(".div-loader")
     let loader = document.querySelector(".loader");
     divLoader.style.display="block";
@@ -173,7 +160,6 @@ function showEffect(){
 }
 //關閉載入中動畫
 function hideEffect(){
-    console.log("hideeffect");
     let divLoader=document.querySelector(".div-loader")
     let loader = document.querySelector(".loader");
     divLoader.style.display="none";
@@ -217,7 +203,6 @@ searchBtn.addEventListener("click",async ()=>{
 initData();
 //Endless頁面
 document.addEventListener("DOMContentLoaded", ()=>{
-
     endlessLoad();
 })
 
