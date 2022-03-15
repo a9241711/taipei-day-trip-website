@@ -1,4 +1,28 @@
 {% extends "base.html"%}
 {%block title%}Index{%endblock%}
+{% block css%}<link rel="stylesheet" href={{ url_for('static', filename='index.css' ) }}>{% endblock%}
 {%block main%}
+<div class="slogan">
+  <div class="slogan-content">
+      <div class="slogan-txt">
+      <h1>輕鬆享受台北一日悠閒</h1>
+      <p>探索每個角落，體驗城市的深度旅遊行程</p>
+      </div>
+      <div class="slogan-input">
+        <div class="input-text">
+        <input type="text" name="search" placeholder="請輸入景點名稱" class="search" autocomplete="off">
+      </div>
+      <button class="slogan-btn" type="submit">
+        <img src={{ url_for('static', filename='icon/search.png' ) }} alt="">
+      </button>
+      </div>
+    </div>
+    <div class="slogan-img">
+      <img src={{ url_for('static', filename='icon/welcome.png' ) }} alt="">
+    </div>
+</div>
+<main class="main">
+
+</main>
 {% endblock %}
+{% block js%}<script src={{ url_for('static', filename='index.js' ) }}></script>{% endblock%}

@@ -1,0 +1,60 @@
+{% extends "base.html"%}
+{%block title%}Attraction{%endblock%}
+{% block css%}<link rel="stylesheet" href={{ url_for('static', filename='attraction.css' ) }}>{% endblock%}
+{%block main%}
+<main>
+    <div class="attractionImge">
+        <a class="prev " onclick="plusSlides(-1)"><img src={{ url_for( 'static', filename='icon/btn_leftArrow.png')}} style="width: 100%;"></a>
+        <a class="next " onclick="plusSlides(1)"> <img src={{ url_for( 'static', filename='icon/btn_rightArrow.png')}} style="width: 100%;"></a>
+        <div class="div-dot" style="text-align:center">
+        </div>
+     </div>
+     <div class="attraction-content">  
+         <h3 class="attractionTitle"></h3>
+             <p class="attractionCate"></p>
+             <p>at</p>
+             <p class="attractionMrt"></p>
+         <div class="attraction-book">
+             <h3>訂購導覽行程</h3>
+             <p>以此景點為中心的一日行程，帶您探索城市角落故事</p>
+             <form action="">
+                 <div>
+                 <label for="date">選擇日期:</label>
+                 <input type="date" id="date" name="date"  min="2022-01-01" max="2025-12-31" required>
+                 </div>
+                 <div >
+                 <label for="time" >選擇時間:</label>
+                 <label for="day" class="radio">上半天
+                     <input type="radio" id="day" name="time" value="2000" onclick="selectTime()">
+                     <span class="radio-span"></span>
+                 </label>
+                 <label for="night" class="radio">下半天
+                     <input type="radio" id="night" name="time" value="2500" onclick="selectTime()">
+                     <span class="radio-span"></span>
+                 </label>
+                 </div>
+                 <div>
+                 <label>導覽費用:</label><p id="selected-time">新台幣2000元</p>
+                 </div>
+                 <button type="submit">開始預訂行程</button>
+             </form>
+         </div>
+     </div>
+ <div class="intro-content">
+       <div>
+           <p class="introDescription"> </p>
+       </div>
+       <div >
+           <h3>景點地址：</h3>
+           <p class="introAddress"></p>
+       </div>
+       <div >
+         <h3>交通方式：</h3>
+         <p class="introTrans"></p>
+     </div>
+ </div>
+</main> 
+{% endblock %}
+{% block js%}
+<script src= {{ url_for('static', filename='attraction.js' ) }}></script>
+{% endblock%}

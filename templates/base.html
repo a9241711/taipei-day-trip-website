@@ -5,80 +5,63 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{%block title%}{% endblock %}</title>
-    <link rel="stylesheet" href="./static/index.css" >
+    {% block css%}{% endblock%}
+    <link rel="stylesheet" href={{ url_for('static', filename='sign.css' ) }} >
+    <link rel="stylesheet" href={{ url_for('static', filename='layout.css' ) }} >
 </head>
 <body>
+  <div class="signin">
+    <form action="#" class="form-container signin-form">
+      <h3>登入會員帳號</h3>
+      <div class="close closeSignin">
+        <img src={{ url_for('static', filename='icon/close.png' ) }} alt="">
+      </div>
+    <input type="text" placeholder="輸入電子郵件" name="email" required>
+    <input type="password" placeholder="輸入密碼" name="password" required>
+    <button type="submit" class="form-btn">登入帳號</button>
+    <div class="form-txt">
+      <p>還沒有帳號？</p><a href="#" class="signin-a">點此註冊</a>
+    </div>
+    </form>
+  </div>
+  <div class="signup">
+    <form action="#" class="form-container">
+      <h3>註冊會員帳號</h3>
+      <div class="close closeSignup">
+        <img src= {{ url_for('static', filename='icon/close.png' ) }} alt="">
+      </div>
+    <input type="text" placeholder="輸入姓名" name="username" required>
+    <input type="text" placeholder="輸入電子郵件" name="email" required>
+    <input type="password" placeholder="輸入密碼" name="password" required>
+    <button type="submit" class="form-btn">註冊新帳號</button>
+    <div class="form-txt">
+      <p>已經有帳戶？</p><a href="#" class="signup-a">點此登入</a>
+    </div>
+    </form>
+  </div>
   <div class="div-loader">
   <div class="loader"></div>
   </div>
         <header >
           <div class="header-content">
-          <div class="header-title"><a href="#">台北一日遊</a> </div>
+          <div class="header-title"><a href="{{ url_for('index') }}">台北一日遊</a> </div>
           <div class="header-nav">
               <a href="#">預定行程</a>
-              <a href="#">登入/註冊</a>
+              <a href="#" class="sign-link">登入/註冊</a>
           </div>
         </div>
         </header>
-        <div class="slogan">
-          <div class="slogan-content">
-              <div class="slogan-txt">
-              <h1>輕鬆享受台北一日悠閒</h1>
-              <p>探索每個角落，體驗城市的深度旅遊行程</p>
-              </div>
-              <div class="slogan-input">
-                <div class="input-text">
-                <input type="text" name="search" placeholder="請輸入景點名稱" class="search" autocomplete="off">
-              </div>
-              <button class="slogan-btn" type="submit">
-                <img src="../static/icon/search.png" alt="">
-              </button>
-              </div>
-            </div>
-            <div class="slogan-img">
-              <img src="static/icon/welcome.png" alt="">
-            </div>
-          
-          
-        </div>
-        <main class="main">
-          {%block main%}{% endblock %}
-          <!-- <div class="main-content">
-                <img class="attractionImg" src="https://picsum.photos/300/200/?random=10">
-              <h1 class="attractionTitle">景點標題</h1>
-              <div class="txt">
-                  <p class="attractionTrans">交通</p>
-                  <p class="attractionCate">景點類別</p>
-                </div>
-          </div>
-          <div class="main-content">
-              <img class="attractionImg" src="https://picsum.photos/300/200/?random=10">
-            <h1 class="attractionTitle">景點標題</h1>
-            <div class="txt">
-                <p class="attractionTrans">交通</p>
-                <p class="attractionCate">景點類別</p>
-              </div>
-        </div>
-        <div class="main-content">
-              <img class="attractionImg" src="https://picsum.photos/300/200/?random=10">
-            <h1 class="attractionTitle">景點標題</h1>
-            <div class="txt">
-                <p class="attractionTrans">交通</p>
-                <p class="attractionCate">景點類別</p>
-              </div>
-        </div>
-        <div class="main-content">
-              <img class="attractionImg" src="https://picsum.photos/300/200/?random=10">
-            <h1 class="attractionTitle">景點標題</h1>
-            <div class="txt">
-                <p class="attractionTrans">交通</p>
-                <p class="attractionCate">景點類別</p>
-              </div>
-        </div> -->
-        </main>
+        
+        
+        {%block main%}
+
+          {% endblock %}
+       
+ 
         <footer class="footer">
           <p>COPYRIGHT @2022台北一日遊</p>
         </footer>
-      <script src="static/index.js"></script>
+      {% block js%}{% endblock%}
+      <script src={{ url_for('static', filename='sign.js' ) }}></script>
 </body>
 </html>
