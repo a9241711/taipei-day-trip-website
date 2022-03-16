@@ -1,0 +1,115 @@
+@keyframes formMove {
+    from {top: 0px;}
+    to {top: 20%;}
+  }
+.signin{
+    width:100%;
+    height: 100vh;
+    position: fixed;
+    z-index: 999;
+    background-color: rgba(0, 0, 0 ,0.4);
+    top: 0;
+    transform:  scale(0);
+    transition: 200ms ease-in-out;
+    display: none;
+}
+.close{
+    position: absolute;
+    top: 10px;
+    right: 0;
+    width: 30px;
+    height: 30px;
+}
+.close:hover{
+    cursor: pointer;
+}
+.form-container{
+    position: absolute;
+    top: 20%;
+    right: 0;
+    left: 0;
+    margin: 0 auto;
+    width: 340px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: #FFFFFF;
+    box-shadow: 0px 4px 60px #AAAAAA;
+    border-radius: 6px;
+}
+.form-container::before{
+    content:'';
+    position:absolute;
+    width:100%;
+    height:10px;
+    background: linear-gradient(270deg, #337788 0%, #66AABB 100%);
+    border-radius: 5px 5px 0 0;
+    top:0;
+    left:0;
+}
+.form-container h3{
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 24px;
+    color: #666666;
+    margin: 20px 0 10px 0;
+ }
+.form-container input[type=text], .form-container input[type=password] {
+    box-sizing: border-box;
+    width: 90%;
+    height: 47px;
+    color: #666666;
+    font-weight: 400;
+    font-size: 16px;
+    padding: 15px;
+    margin: 5px 0;
+    border: 1px solid #CCCCCC;
+    border-radius: 5px;
+    background: #FFFFFF;;
+  }
+.form-container .form-btn {
+    width: 90%;
+    height: 47px;
+    line-height: 47px;
+    background: #448899;
+    border-radius: 5px;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin:5px 0;
+    font-weight: 400;
+    font-size: 19px;
+  }
+.form-container .form-txt{
+    display: flex;
+    align-items: center;
+    color: #666666;
+    font-weight: 400;
+    font-size: 16px;
+  }
+.form-container .form-txt a{
+    text-decoration: none;
+    color: #666666;
+    font-weight: 400;
+    font-size: 16px;
+}
+.form-container .form-txt a:hover{
+    text-decoration: underline;
+}
+.signup{
+    width:100%;
+    height: 100vh;
+    position: fixed;
+    z-index: 999;
+    background-color: rgba(0, 0, 0 ,0.4);
+    top: 0;
+    display: none;
+  }
+
+  /* 平板/手機畫面 */
+@media (max-width: 1200px){
+    .signin,.signup{
+        height: 75vh;
+    }
+}

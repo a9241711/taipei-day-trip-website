@@ -22,7 +22,7 @@ def getAttractions():
             "error": True, 
             "message": "page格式錯誤"
         }
-        return make_response(jsonify(errorPage)), {"Access-Control-Allow-Origin": "*"}
+        return make_response(jsonify(errorPage),400), {"Access-Control-Allow-Origin": "*"}
     intPage = int(page)
     pageStart = intPage * 12  # 根據page起始，決定要拿取的起始列數
     pageInterval = 12  # 固定提取的筆數為12筆 # print(pageStart, pageInterval)
@@ -40,20 +40,18 @@ def getAttractions():
                 "error": True, 
                 "message": "查不到景點"
             }
-            return make_response(jsonify(response)),500, {"Access-Control-Allow-Origin": "*"}
+            return make_response(jsonify(response),500), {"Access-Control-Allow-Origin": "*"}
         for attractionResult in attractionResults:  # 把景點結果放入for迴圈
             attractionResultList=list(attractionResult)
             attractionResultList[9]=json.loads(attractionResultList[9])##將img圖片字串轉回list
             arractionData = dict(zip(mycursor.column_names, attractionResultList))# 轉換成dict，並zip結合
             attractionList.append(arractionData)  # 把dict append回去空List
-        if len(attractionList) <12:  # 如果搜尋結果小於13筆，表示沒有下一頁
-            print(len(attractionList))
+        if len(attractionList) <12:  # 如果搜尋結果小於13筆，表示沒有下一頁 # print(len(attractionList))
             response = {
                 "nextPage": None,
                 "data": attractionList}
             return make_response(jsonify(response)), {"Access-Control-Allow-Origin": "*"}  # print(response)
-        else:  # 如果不小於12，表示有下一頁
-            print(len(attractionList))
+        else:  # 如果不小於12，表示有下一頁print(len(attractionList))
             response = {  
                 "nextPage": intPage+1,  # 如果不小於12，表示有下一頁
                 "data": attractionList
@@ -81,13 +79,14 @@ def attraction(attractionId):
             attractionList[9]=json.loads(attractionList[9])#將img圖片字串轉回list
             attractionData = dict(zip(mycursor.column_names, attractionList))
             response={"data":attractionData}
-            return jsonify(response)
+            return make_response(jsonify(response)), {"Access-Control-Allow-Origin": "*"}
         else:  # 如果沒找到則回傳失敗
-            return jsonify({
+            response={
                 "error": True,
                 "message": "景點編號不正確"
-            }, 400)
+            }
+            return make_response(jsonify(response),400),{"Access-Control-Allow-Origin": "*"}
     except Exception as e:
         print(e)
         return jsonify({"error": True,
-                        "message": "伺服器內部錯誤"}, 500)
+                        "message": "伺服器內部錯誤"})

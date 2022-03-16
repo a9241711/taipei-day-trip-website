@@ -1,0 +1,301 @@
+/* 輪播圖片 */
+.slide{
+    display: none;
+}
+/* 左右圖片切換按鈕 */
+.prev, .next{
+    position: absolute;
+    top:50%;
+    width: 36px;
+    height: 36px;
+    opacity: 0.75;
+    cursor: pointer;
+    transition: 0.6s ease;
+    user-select: none;
+    display: none;
+    z-index: 90;
+}
+.next{
+    right:10px;
+}
+.prev{
+    left: 10px;
+}
+.prev:hover, .next:hover {
+    opacity: 1;
+  }
+/* dot位置 */
+.div-dot{
+    width: 100%;
+    position: absolute;
+    bottom:10px;
+    z-index: 90;
+}
+.dot{
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #FFFFFF;
+    margin: 0 10px;
+    cursor: pointer;
+    transition: 0.6s ease;
+}
+.active, .dot:hover{
+    background-color: #000000;
+    border: 1px solid #FFFFFF;
+}
+/* 圖片消失動畫 */
+.fade{
+    -webkit-animation-name: fade;
+    -webkit-animation-duration: 0.5s;
+    animation-name: fade;
+    animation-duration: 0.5s;
+}
+@-webkit-keyframes fade {
+    from {opacity: .4} 
+    to {opacity: 1}
+  }
+@keyframes fade{
+    from {opacity: .4;}
+    to{opacity: 1;}
+}
+
+/* 主內容頁 */
+ main{
+    margin: 100px auto;
+    width: 1200px;
+    display: grid;
+    grid-template-columns: 0.25fr 0.25fr 0.25fr 0.25fr;
+    grid-template-areas: 
+    'left left right right'
+    'intro intro intro intro';
+    grid-gap: 10px;
+    align-items: flex-start;
+    justify-items: center;
+}
+/* 桌機圖片等高與寬 */
+
+.attractionImge{
+    position: relative;
+    grid-area: left;
+}
+.slide{
+    width:540px;
+    height:400px;
+}
+.slide img{
+    width: 540px;
+    height:400px;
+    object-fit: cover;
+    vertical-align: middle;
+}
+main .attraction-content{
+    width: 100%;
+    grid-area: right;
+    margin-bottom: 40px;
+}
+main .attraction-content>p{
+    display: inline-block;
+}
+main .attractionTitle{
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 24px;
+    color: #666666;
+    margin:0 ;
+}
+main .attraction-book{
+    background: #E8E8E8;
+    border-radius: 5px;
+    padding: 10px 20px 30px 20px;
+}
+
+main .attraction-book form{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+/* 編輯DATE Input */
+main .attraction-book form input[type=date] {
+    width: 193px;
+    height: 35px;
+    border: none;
+    background: #FFFFFF;
+    font-weight: 400;
+    font-size: 16px;
+    color: #000000;
+    font-family: 'Noto Sans TC';
+    line-height: 35px;
+    padding: 0 5px;
+  }
+/* 編輯radio style */
+main .attraction-book form .radio{
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    cursor: pointer;
+}
+main .attraction-book form label{
+    margin-right: 10px;
+    font-weight: 700;
+    font-size: 16px;
+    color: #666666;
+    margin: 0 10px 0 0;
+    word-break: keep-all;
+}
+/* 隱藏預設Radio樣式*/
+main .attraction-book form .radio input[type=radio] {
+    opacity: 0;
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  /* 設計radio樣式 */
+main .attraction-book form .radio .radio-span{
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 22px;
+    width: 22px;
+    background-color:  #ffffff;
+    border-radius: 50%;
+  }
+/* 當radio select時加入白色背景 */
+main .attraction-book form .radio input:checked ~ .radio-span {
+    background: #ffffff;
+    width: 22px;
+    height: 22px;
+  }
+/* 加入偽類元素 */
+.radio-span:after {
+    content: "";
+    position: absolute;
+    display: none;
+  }
+  
+  /* 當radio select時display:block */
+.radio input:checked ~ .radio-span:after {
+    display: block;
+  }
+  
+  /* 當radio select時加入背景顏色 */
+.radio .radio-span:after {
+    top: 2px;
+    left: 2px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #448899;
+  }
+
+/* form表單設計 */
+main .attraction-book form>div{
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+main .attraction-book form p{
+    display: inline-block;
+    margin: 0 10px 0 0;
+}
+main .attraction-book form button{
+    width: 154px;
+    height: 36px;
+    background: #448899;
+    border-radius: 5px;
+    padding: 10px 20px;
+    border: none;
+    color: #FFFFFF;
+    font-weight: 400;
+    font-size: 19px;
+    line-height: 16px;
+    cursor: pointer;
+}
+/* 下方介紹頁 */
+.intro-content{
+    grid-area:intro;
+    border-top: 1px solid #E8E8E8;
+    padding-top: 30px;
+}
+
+/* 平板/手機畫面 */
+@media (min-width: 601px) and (max-width: 1200px){
+
+
+/* 主內容頁 */
+main{
+    /* margin: 100px auto; */
+    width: unset;
+    /* display: grid;
+    grid-template-columns: 0.5fr 0.5fr;
+    grid-template-areas: 
+    'left left '
+    'right right '
+    'intro intro '; */
+    /* grid-row-gap: 20px; */
+
+}
+.slide {
+    width: unset;
+    height: unset;
+}
+.slide img {
+    width: 100%;
+    height: 400px;
+}
+main .attraction-content{
+    width: 95%;
+}
+main .attraction-book form input[type=date] {
+    width: 90%;
+}
+.intro-content{
+    width: 95%;
+}
+
+/* 圖片 */
+/* .slide{
+    width:100%;
+    /* height:400px; */
+/* } */
+/* .slide img{
+    width: 540px;
+    height:400px; */
+    /* object-fit: cover; */ 
+/* } */
+}
+
+@media (min-width: 360px) and (max-width: 600px){
+main{
+    margin: 0 auto 100px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 0.5fr 0.5fr;
+    grid-template-areas: 
+    'left left '
+    'right right '
+    'intro intro ';
+    grid-row-gap: 20px;
+
+}
+main .attraction-content{
+    width: 95%;
+}
+.intro-content{
+    width: 95%;
+}
+/* 圖片 */
+.slide{
+    margin-top: 54px;
+    width:unset;
+    height:unset;
+}
+.slide img{
+    width:100%;
+    height:350px;
+    object-fit: cover;
+}
+}

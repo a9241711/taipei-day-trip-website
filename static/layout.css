@@ -1,4 +1,106 @@
- /* 主Banner頁 */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&family=Noto+Sans:wght@400;700&display=swap');
+
+body{
+    margin: 0 auto;
+    font-family: "Noto Sans TC", Georgia, Times, 'Times New Roman', serif;
+    font-size: 16px;
+    color: #666666;
+    font-weight: 400px;
+}
+/* 載入中動畫 */
+.div-loader{
+  position: fixed;
+  background-color: white;
+  height: 100vh;
+  width: 100%;
+  z-index: 99;
+}
+.loader {
+    position: fixed;
+    left: 0;
+    top: 0; 
+    right: 0;
+    bottom: 0;
+    border: 16px solid #c7c7c7;
+    border-radius: 50%;
+    border-top: 16px solid #3498db;
+    width: 120px;
+    height: 120px;
+    -webkit-animation: spin 2s linear infinite; /* Safari */
+    animation: spin 2s linear infinite;
+    z-index: 100;
+    margin: auto;
+  }
+  
+  /* Safari */
+  @-webkit-keyframes spin {
+    0% { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); }
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+/* 導覽列 */
+header{
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    position: fixed;
+    width: 100%;
+    height: 54px;
+    left: 0px;
+    top: 0px;
+    display: flex;
+    justify-content: center;
+    background-color: #FFFFFF;
+    z-index: 100;
+    overflow: hidden;
+}
+.header-content {
+    width: 1200px;
+    height: 34px;
+    top: 0;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: auto ;
+    padding: 0;
+  }
+.header-title{
+    width: 100%;
+    height: 34px;
+}
+.header-title a{
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 30px;
+    line-height: 34px;
+    /* identical to box height, or 113% */
+    /* Cyan 800 */
+    color: #448899;
+}
+.header-nav{
+    width: 100%;
+    height: 34px;
+    display: flex;
+    justify-content: flex-end;
+}
+.header-nav a{
+    text-decoration: none;
+    font-weight: 400;
+    line-height: 34px;
+    color: #666666;
+    margin: 0 5px;
+}
+.header-nav a:hover{
+    color: #448899;
+}
+
+/* 主Banner頁 */
 .slogan{
     width: 100%;
     height: 320px;
@@ -101,72 +203,21 @@
     bottom: 0;
 }
 
-/* 主內容頁 */
- main{
-    margin: 100px auto;
-    width: 1200px;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: auto;
-    align-items: flex-start;
-    overflow: hidden;
-}
-main .main-content{
-    display: flex;
-    width: 270px;
-    margin:0 auto 30px;
-    padding: 0 ;
-    flex-direction: column;
-    background: #FFFFFF;
-    border-radius: 5px;
-    border: 1px solid #E8E8E8;
-    justify-content: space-between;
-}
-main .main-content a{
-  text-decoration: none;
-}
-main .main-content .attractionImg{
-    width: 100%;
-    height: 160px;
-    border-radius: 5px 5px 0 0;
-    object-fit:cover;
-}
-main .main-content .attractionTitle{
-    width: 95%;
-    height: 22px;
-    font-weight: 700;
-    font-size: 1rem;
-    line-height: 22px;
-    color: #757575;
-    margin: 5px auto 15px;
-    padding-bottom: 5px;
-}
 
-main .main-content .txt{
+/* 頁尾 */
+footer{
     display: flex;
-    justify-content: space-between;
-    width: 95%;
-    /* Body - Reg 16(13.3) */
-    font-weight: 400;
-    /* Gray 700 */
-    color: #757575;
-    margin: 15px auto 15px;
-}
-main .main-content .txt p{
-    line-height: 20px;
-    height: 20px;
-    margin: 0;
-}
-/* 關鍵字搜尋無結果時顯示文字 */
-.noPage{
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     width: 100%;
-    height: 30vh;
-    padding: 20px;
-}
-.noPage p{
+    background: #757575;
+  }
+  footer p{
     font-weight: 700;
-    color: #448899;
-}
+    color: #FFFFFF;
+  }
+
 /* 平板畫面 */
 @media (min-width: 601px) and (max-width: 1200px){
 .header-content {
@@ -179,38 +230,21 @@ main .main-content .txt p{
       margin: auto ;
       padding: 0;
     }
-main{
-      margin: 20px auto;
-      width: 100%;
-      display: grid;
-      grid-template-columns:  1fr 1fr;;
-      grid-template-rows: auto;
-      align-items: flex-start;
-      /* overflow: hidden; */
-  }
-main .main-content{
-      display: flex;
-      width: 90%;
-      margin:0 auto 30px;
-      padding: 0 ;
-      flex-direction: column;
-      background: #FFFFFF;
-      border-radius: 5px;
-      border: 1px solid #E8E8E8;
-      justify-content: space-between;
-  }
-  
-main .main-content .attractionImg {
-  width: 100%;
-  height: 200px;
-  border-radius: 5px 5px 0 0;
-  object-fit: cover;
-
-  }
 
 }
 /* 手機畫面 */
 @media (min-width: 360px) and (max-width: 600px) {
+.header-content {
+      width: 100%;
+      /* height: 34px; */
+      top: 0;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: auto ;
+      padding: 0;
+    }
 .slogan{
       width: 100%;
       /* height: 320px; */
@@ -248,31 +282,5 @@ main .main-content .attractionImg {
       right: -30%;
       width: 100%;
       bottom: 0;
-  }
-main{
-      margin: 20px auto;
-      width: 90%;
-      display: grid;
-      grid-template-columns:  1fr;
-      grid-template-rows: auto;
-      align-items: flex-start;
-  }
-main .main-content{
-      display: flex;
-      width: 100%;
-      margin:0 auto 30px;
-      padding: 0 ;
-      flex-direction: column;
-      background: #FFFFFF;
-      border-radius: 5px;
-      border: 1px solid #E8E8E8;
-      justify-content: space-between;
-  }
-  
-main .main-content .attractionImg {
-  width: 100%;
-  border-radius: 5px 5px 0 0;
-  object-fit: cover;
-  height: auto;
   }
 }
