@@ -4,8 +4,7 @@ from flask import  jsonify
 from dotenv import load_dotenv
 load_dotenv()
 
-try:
-    connection_pool = mysql.connector.pooling.MySQLConnectionPool(
+connection_pool = mysql.connector.pooling.MySQLConnectionPool(
     pool_name="mysql",
     pool_size=5,
     connect_timeout=1000,
@@ -15,8 +14,6 @@ try:
     port=os.getenv("SERVER_PORT"),
     password=os.getenv("SERVER_PASSWORD"),
     database=os.getenv("SERVER_DATABASE"),)
-except Exception as e:
-    print(e)
 
 def closePool(mysqlConnection, mycursor):
     if mysqlConnection.is_connected():
