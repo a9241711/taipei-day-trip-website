@@ -1,4 +1,4 @@
-from api.mysql_connect import connection_pool, closePool
+from .mysql_connect import connection_pool, closePool
 from flask import Blueprint, jsonify, request, make_response
 from dotenv import load_dotenv
 import re

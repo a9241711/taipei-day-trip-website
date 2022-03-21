@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request, make_response,session,redirect, url_for
 from dotenv import load_dotenv
-from api.mysql_connect import connection_pool, closePool
+from .mysql_connect import connection_pool, closePool
 import os,re
 
 

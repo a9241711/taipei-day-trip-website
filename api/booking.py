@@ -1,6 +1,6 @@
 from msilib.schema import Error
 from flask import Blueprint,jsonify,request,make_response,session
-from api.mysql_connect import connection_pool,closePool
+from .mysql_connect import connection_pool,closePool
 import os,json
 from dotenv import load_dotenv
 
