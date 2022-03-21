@@ -1,7 +1,4 @@
 /* 輪播圖片 */
-.slide{
-    display: none;
-}
 /* 左右圖片切換按鈕 */
 .prev, .next{
     position: absolute;
@@ -12,7 +9,7 @@
     cursor: pointer;
     transition: 0.6s ease;
     user-select: none;
-    display: none;
+    /* display: none; */
     z-index: 90;
 }
 .next{
@@ -79,10 +76,13 @@
 .attractionImge{
     position: relative;
     grid-area: left;
+    margin: 0 auto;
 }
 .slide{
     width:540px;
     height:400px;
+    display: none;
+    margin: auto;
 }
 .slide img{
     width: 540px;

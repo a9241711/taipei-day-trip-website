@@ -55,6 +55,9 @@
     color: #666666;
     margin: 20px 0 10px 0;
  }
+ .form-container p{
+     margin: 10px 0;
+ }
 .form-container input[type=text], .form-container input[type=password] {
     box-sizing: border-box;
     width: 90%;
@@ -106,7 +109,9 @@
     top: 0;
     display: none;
   }
-
+/* .signOut{
+    display: none;
+} */
   /* 平板/手機畫面 */
 @media (max-width: 1200px){
     .signin,.signup{
