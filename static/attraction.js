@@ -1,29 +1,44 @@
 //全域變數設定
-//fetch attractionId資料變數
-let attractionId
+//fetch attractionData資料變數
+let attractionData
 // 輪播圖片設定
 let slideIndex=1;
-let aTag=document.querySelectorAll("a");
-
+let bookingBtn=document.querySelector(".booking-btn"); //提交booking的按鈕
+let atttractionUrl =location.href; //取得網址
+let urlNum=atttractionUrl.split("/")[atttractionUrl.split("/").length - 1] //取最後ID值
 //Model區 取得資料
 //fetch
-function getIdFetch(){
+async function getIdFetch(){
     try{
-        let url =location.href;
-        let urlNum=url.split("/")[url.split("/").length - 1] //取最後值
-    return  fetch(`/api/attraction/${urlNum}`).then((response)=>{
-            // console.log(response)
-            return response.json();
-        }).then((data)=>{
-            // console.log(data)
-            return attractionId = data;
-        })
+        const response = await fetch(`/api/attraction/${urlNum}`);
+        const data = await response.json();
+        return attractionData = data;
     }
     catch(message){
         throw Error("Error",message);
     }
 }
 
+//fetch booking data
+async function postBooking(attractionId,date,time,price){
+    try{
+        const response=await fetch("/api/booking",{
+            method:"POST",
+            headers:{"Content-Type":"application/json; Charset=UTF-8"},
+            body:JSON.stringify({
+                attractionId:attractionId,
+                date:date, 
+                time:time,
+                price:price
+            })
+        });
+        const data=response.json()
+        return data
+    }
+    catch(message){
+        throw Error("Error",message)
+    }
+}
 //view區 render畫面至html
 //景點資訊
 function getIdData (){
@@ -38,13 +53,13 @@ function getIdData (){
     let introTrans= document.querySelector(".introTrans");
     let divDot=document.querySelector(".div-dot");
     // //取得fetch data console.log(attractionId)
-    let attractionImages=attractionId["data"]["images"];
-    let attractionTitleValue=attractionId["data"]["name"];
-    let attractionCateValue=attractionId["data"]["category"];
-    let attractionMrtValue=attractionId["data"]["mrt"];
-    let introDescriptionValue=attractionId["data"]["description"];
-    let introAddressValue=attractionId["data"]["address"];
-    let introTransValue=attractionId["data"]["transport"];
+    let attractionImages=attractionData["data"]["images"];
+    let attractionTitleValue=attractionData["data"]["name"];
+    let attractionCateValue=attractionData["data"]["category"];
+    let attractionMrtValue=attractionData["data"]["mrt"];
+    let introDescriptionValue=attractionData["data"]["description"];
+    let introAddressValue=attractionData["data"]["address"];
+    let introTransValue=attractionData["data"]["transport"];
 
     //Render文字回去 attraction.html
     attractionTitle.textContent=attractionTitleValue;
@@ -69,17 +84,7 @@ function getIdData (){
     }
 }
 
-//顯示方向鍵
-async function showArrowElement(){
-    await new Promise((resolve,reject)=>{
-        setTimeout(()=>{
-        for (let j =0;j<aTag.length;j++){
-            aTag[j].style.display="block";
-            }
-        },500)
-        resolve();//繼續往下執行
-    })
-}
+
 
 //選擇方向鍵時顯示圖片
 function plusSlides(n){
@@ -141,12 +146,36 @@ async function getInitail(){
     showEffect()
     await getIdFetch();
     getIdData();
-    showArrowElement();
     showSlide(slideIndex);
     hideEffect()
 }
 
+function getBookingPost(){
+    bookingBtn.addEventListener("click", async(e)=>{
+        e.preventDefault();
+        let attractionId=urlNum;
+        let date = document.querySelector('input[name="date"]').value;
+        let price=document.querySelector('input[name="time"]:checked').value;
+        let time 
+        if(price==2000){
+            time="moring";
+        }else{
+            time="afternoon";
+        }
+        console.log(attractionId,date,price,time)
+        let data= await postBooking(attractionId,date,time,price);
+        if(data["ok"]==true){
+            window.location="/booking"
+        }
+        else{
+            alert("錯誤")
+        }
+    })
+}
+
+
 //執行function
 document.addEventListener("DOMContentLoaded",()=>{
     getInitail();
+    getBookingPost()
 })

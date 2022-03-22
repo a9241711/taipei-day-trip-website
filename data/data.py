@@ -52,9 +52,9 @@ with open('taipei-attractions.json', 'r', encoding="utf-8") as jsonfile:
                 imagesUrlList.append(imageUrl)
         imagesUrlListJson = json.dumps(imagesUrlList)  # 轉換成json字串
         print(imagesUrlListJson)
-        # sql_data = ("INSERT INTO attraction (id, name, category, description, address, transport, mrt, latitude, longitude, images)"
-        #             "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)")
-        # mycursor.execute(sql_data, (id, name, category, description, address,
-        #                  transport, mrt, latitude, longitude, imagesUrlListJson))
+        sql_data = ("INSERT INTO attraction (id, name, category, description, address, transport, mrt, latitude, longitude, images)"
+                    "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)")
+        mycursor.execute(sql_data, (id, name, category, description, address,
+                         transport, mrt, latitude, longitude, imagesUrlListJson))
 
-        # mydb.commit()
+        mydb.commit()
