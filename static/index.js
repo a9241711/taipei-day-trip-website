@@ -4,7 +4,7 @@ let keyword=""
 const searchBtn=document.querySelector(".slogan-btn");
 const loader = document.querySelector(".loader");
 const main=document.querySelector(".main");
-let attractions//取得景點資料變數
+// let attractions//取得景點資料變數
 
 //Model區與後端要資料處理
 //***fetch景點資訊url，page+keyword***//
@@ -22,8 +22,10 @@ async function getPageData(page,keyword){
 
 //View render畫面區
 //***根據page取得景點資訊***//
-function showAttraction(){
+async function showAttraction(){
+    showEffect()//載入中畫面
     // //fetch資料
+    let attractions= await getPageData(page,keyword);
     page =attractions["nextPage"];
     if(attractions["error"]!=true){
         let attractionData=attractions["data"];
@@ -49,10 +51,12 @@ function showAttraction(){
         </div>
         </a>`
         main.appendChild(mainContent);
+        hideEffect()//關閉載入中畫面
         //設定flag為true
         ready=true;
     } 
     }else{
+        showEffect()//載入中畫面
         //若無法順利找到景點，則顯示無法找到景點的文字
         removeAttraction();
         let notFoundAttraction =document.createElement("p");
@@ -68,7 +72,15 @@ function showAttraction(){
 
 //***關鍵字搜尋景點function***//
 function showKeywordAttraction(){
-
+    searchBtn.addEventListener("click", async ()=>{
+    //開啟載入中動畫
+     showEffect();     
+     //取得使用者輸入的值
+     let searchValue=document.querySelector(".search").value;
+     let keywordPage=0;
+     keyword=searchValue;
+    // //fetch資料
+    let attractions= await getPageData(keywordPage,keyword);
     let keywordData=attractions["data"];
     //若無response錯誤訊息，表示成功取得景點資訊，顯示景點內容
     if(attractions["error"]!=true){ 
@@ -76,9 +88,7 @@ function showKeywordAttraction(){
         let keywordNextPage =attractions["nextPage"];
         //紀錄page的頁數console.log("keywordpage",page)
         page=keywordNextPage;
-        //開啟載入中動畫
-        showEffect();
-        //移除頁面中的內容
+        // //移除頁面中的內容
         removeAttraction();
         //render景點資訊到頁面中
         for (let i=0;i<keywordData.length;i++){
@@ -101,20 +111,23 @@ function showKeywordAttraction(){
            </div>
            </a>`
            main.appendChild(mainContent);
+           hideEffect();
            //設定flag為true
            ready=true;
        }
     }else{//若無法順利找到景點，則顯示無法找到景點的文字
+        showEffect()//載入中畫面
         removeAttraction();
         let notFoundAttraction =document.createElement("p");
         notFoundAttraction.classList.add("noPage");
         notFoundAttraction.textContent="查無景點";
         main.appendChild(notFoundAttraction);
         page=null;
+        hideEffect();//關閉載入畫面
         //設定flag為true
         ready=true;
     }
-
+})
 }
 
 //***Endless Scroll function***//
@@ -131,17 +144,16 @@ let option={
 async function handleIntersect(entries){
     if(page==null){
         return
-    }if(entries[0].intersectionRatio <= 0) return;//若可視範圍<0代表離開可視範圍，return
-    else{
-        if(entries[0].isIntersecting && ready){
+    }
+    // if(entries[0].intersectionRatio <= 0) return;//若可視範圍<0代表離開可視範圍，return
+    // else{
+        console.log(entries[0].isIntersecting)
+    if(entries[0].isIntersecting && ready){ 
             ready=false;
-            showEffect()
-            await getPageData(page,keyword);
             showAttraction();     
-            hideEffect();
                 }  
     }
-}
+// }
 //建構IntersectionObserver
 const observer=new IntersectionObserver(handleIntersect,option);
 observer.observe(footer);
@@ -168,41 +180,21 @@ function hideEffect(){
 
 //Controller區
 //初始畫面
-async function initData(){
-    showEffect();
-    //fetch資料
-    await getPageData(page,keyword);// console.log("attractions",attractions,"attractionpage",page)
-    // console.log(attractions ,"page",page)
+function initData(){
+    
     showAttraction();
-    hideEffect();
+    
 
 }
-//無限滑動效果
-function endlessLoad(){
-    handleIntersect();
-}
-
-//關鍵字搜尋
-searchBtn.addEventListener("click",async ()=>{
-    //開啟載入中動畫
-    showEffect();
-    //取得使用者輸入的值
-    let searchValue=document.querySelector(".search").value;
-    let keywordPage=0;
-    keyword=searchValue;
-    //根據keyword Fetch資料console.log("keywordPage",keywordPage)
-     await getPageData(keywordPage,keyword);           
-     showKeywordAttraction();
-     //關閉載入中動畫
-     hideEffect();
-})
 
 
 //執行function區
 //頁面初始載入
 initData();
+// keywordInput()
 //Endless頁面
 document.addEventListener("DOMContentLoaded", ()=>{
-    endlessLoad();
+    handleIntersect();//Endless page
+    showKeywordAttraction()
 })
 

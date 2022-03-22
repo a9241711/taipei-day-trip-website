@@ -6,6 +6,7 @@ body{
     font-size: 16px;
     color: #666666;
     font-weight: 400px;
+    height: 100%;
 }
 /* 載入中動畫 */
 .div-loader{
@@ -210,9 +211,10 @@ footer{
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;;
     width: 100%;
     background: #757575;
+    position:absolute;
   }
   footer p{
     font-weight: 700;
