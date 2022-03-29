@@ -12,7 +12,7 @@
 /* 上方主要內容區域 */
 main .attraction-content{
     width: 100%;
-    margin-bottom: 25px;
+    margin-bottom: 75px;
     display: flex;
     flex-wrap: wrap;
     position: relative;
@@ -158,7 +158,7 @@ main{
 /* 刪除按鈕 */
 main .attraction-content .delete{
     position: absolute;
-    bottom: -5%;
+    bottom: -10%;
     right: 0;
 }
 main .attractionImge{
