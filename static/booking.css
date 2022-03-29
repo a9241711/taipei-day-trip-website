@@ -1,31 +1,3 @@
-/* 載入中動畫 */
-.div-loader{
-    position: fixed;
-    background-color: white;
-    height: 100vh;
-    width: 100%;
-    z-index: 99;
-    display: none;
-  }
-  .loader {
-      position: fixed;
-      left: 0;
-      top: 0; 
-      right: 0;
-      bottom: 0;
-      border: 16px solid #c7c7c7;
-      border-radius: 50%;
-      border-top: 16px solid #3498db;
-      width: 120px;
-      height: 120px;
-      -webkit-animation: spin 2s linear infinite; /* Safari */
-      animation: spin 2s linear infinite;
-      z-index: 100;
-      margin: auto;
-      display: none;
-    }
-    
-
 /* 主內容頁 */
  main{
     margin: 100px auto;
@@ -34,7 +6,6 @@
     grid-template-columns: 1fr;
     grid-gap: 10px;
     align-items: flex-start;
-    justify-items: center;
 }
 /* 桌機圖片等高與寬 */
 
@@ -49,33 +20,29 @@ main .attraction-content{
 /* 刪除按鈕 */
 main .attraction-content .delete{
     position: absolute;
-    top: 20%;
-    right: 10%;
+    right: 5%;
     cursor: pointer;
 }
 
 /* 圖片設定 */
 main .attractionImge{
-    width: 20%;
+    width: 25%;
 }
 main .attractionImge img{
     width: 100%;
 }
-main .attraction-content .reservation-title{
+main .reservation-title{
     width: 100%;
-    height: 16px;
     font-weight: 700;
     font-size: 19px;
-    line-height: 16px;
     color: #666666;
+    margin: 0;
 }
 main .attractionTitle {
-    height: 13px;
     font-weight: 700;
     font-size: 16px;
-    line-height: 13px;
     color: #448899;
-    margin: 0 0 20px 0;
+    margin: 0 0 10px 0;
 }
 
 main .attraction-book{  
@@ -94,20 +61,16 @@ main .attraction-book .book-content>div{
     justify-content: flex-start;
 }
 .book-title{
-    height: 13px;
     margin: 0 10px 0 0;
     font-weight: 700;
     font-size: 16px;
     color: #666666;
 }
 .book-info{
-    height: 13px;
     margin: 0 ;
     font-weight: 400;
     font-size: 16px;
-    line-height: 13px;
     color: #666666;
-    padding: 5px 0;
 }
 
 /* 下方區塊設定 */
@@ -124,6 +87,8 @@ main .attraction-reservation .connect-form{
 }
 main .attraction-reservation .reservation-form .connect-form>div,.payment-form>div{
     margin: 20px 0;
+    display: flex;
+    align-items: center;
 }
 main .attraction-reservation .reservation-form .payment-form{
     border-top: 1px solid #E8E8E8;
@@ -136,7 +101,7 @@ main .attraction-reservation form label{
     color: #666666;
     margin-right: 5px;
 }
-main .attraction-reservation form input{
+main .attraction-reservation form input, .tpfield{
     width: 200px;
     height: 38px;
     background: #FFFFFF;
@@ -150,12 +115,13 @@ main .attraction-reservation form input{
 }
 
 /* Button */
-.book-submitDiv{
+.order-submitDiv{
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
+    padding-right: 10%;
+    float: right;
 }
-.book-submitDiv button{
+.order-submitDiv button{
     width: 173px;
     height: 36px;
     background: #448899;
@@ -168,6 +134,12 @@ main .attraction-reservation form input{
     color: #FFFFFF;
     cursor: pointer;
 }
+#curl{
+    font-family: "Noto Sans TC", Georgia, Times, 'Times New Roman', serif;
+    font-size: 16px;
+    font-weight: 400px;
+    height: 100%;
+}
 
 /* 平板/手機畫面 */
 @media (min-width: 601px) and (max-width: 1200px){
@@ -175,7 +147,7 @@ main .attraction-reservation form input{
         width: 95%;
     }
     main .attractionImge{
-        width: 240px;
+        width: 270px;
     }
 }
 
@@ -187,7 +159,7 @@ main{
 main .attraction-content .delete{
     position: absolute;
     top: unset;
-    bottom: 0;
+    bottom: -5%;
     right: 5%;
 }
 main .attractionImge{

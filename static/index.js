@@ -145,9 +145,7 @@ async function handleIntersect(entries){
     if(page==null){
         return
     }
-    // if(entries[0].intersectionRatio <= 0) return;//若可視範圍<0代表離開可視範圍，return
-    // else{
-        console.log(entries[0].isIntersecting)
+        // console.log(entries[0].isIntersecting)
     if(entries[0].isIntersecting && ready){ 
             ready=false;
             showAttraction();     
@@ -163,20 +161,6 @@ observer.observe(footer);
 function removeAttraction(){
     main.innerHTML='';
 }
-//開啟載入中動畫
-function showEffect(){
-    let divLoader=document.querySelector(".div-loader")
-    let loader = document.querySelector(".loader");
-    divLoader.style.display="block";
-    loader.style.display="block";
-}
-//關閉載入中動畫
-function hideEffect(){
-    let divLoader=document.querySelector(".div-loader")
-    let loader = document.querySelector(".loader");
-    divLoader.style.display="none";
-    loader.style.display="none";
-}
 
 //Controller區
 //初始畫面
@@ -191,7 +175,7 @@ function initData(){
 //執行function區
 //頁面初始載入
 initData();
-// keywordInput()
+
 //Endless頁面
 document.addEventListener("DOMContentLoaded", ()=>{
     handleIntersect();//Endless page

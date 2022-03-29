@@ -1,7 +1,11 @@
 import os,json
+from tkinter import E
+from urllib import response
 import mysql.connector.pooling
 from flask import  jsonify
 from dotenv import load_dotenv
+
+
 load_dotenv()
 
 connection_pool = mysql.connector.pooling.MySQLConnectionPool(
@@ -120,14 +124,12 @@ def getBooking_data(userId):
     try:
         mysqlConnection=connection_pool.get_connection()
         mycursor=mysqlConnection.cursor()
-        mycursor.execute("SELECT * from member where id=%s"%(userId,))#找到登入者的會員資料
-        member=mycursor.fetchone()
-        bookingId=member[4] #找到該會員的bookingId print("member",member,"bookingId",bookingId)
-        if not bookingId:
+        mycursor.execute("SELECT * from booking WHERE userid=%s"%(userId,)) #找到該會員的booking資訊 
+        bookingInformation=mycursor.fetchone()
+        if not bookingInformation:
             response=None
             return response
-        mycursor.execute("SELECT * from booking WHERE id=%s"%(bookingId,)) #找到該會員的booking資訊 print("BookingInfo",bookingInformation)
-        bookingInformation=mycursor.fetchone()
+        # print("BookingInfo",bookingInformation)
         #取得booking訂單資訊
         arractionId=bookingInformation[1] #取得arractionID，用來取得attraction資訊
         bookingDate=bookingInformation[2]
@@ -140,7 +142,6 @@ def getBooking_data(userId):
         attractionName=attractionInformation[0] #取得景點名稱
         attractionAddress=attractionInformation[1] #取得地址
         attractionImage=json.loads(attractionInformation[2]) #取得image
-        
         #組成data
         response= {
             "data":{
@@ -170,23 +171,23 @@ def postBooking_data(userId,bookingId,bookingDate,bookingTime,bookingPrice):
     try:
         mysqlConnection=connection_pool.get_connection()
         mycursor=mysqlConnection.cursor()
-        mycursor.execute("SELECT id from booking ORDER BY id DESC LIMIT 1; ")#取得booking資料表中最後一欄位
-        findLastBook=mycursor.fetchone() #print(findLastBook)
-        if not findLastBook: #若找不到資料，表示booking表無資料，起始id為1
-            findLastBookId =1
-        else:
-            findLastBookId=list(findLastBook)[0]+1 #取得欄位id 並且+1# print(findLastBookId)    
-        userBookingId=(findLastBookId,userId) #存入member table的bookingId,與會員ID
-        print("userBookingId",type(findLastBookId),userBookingId )
-        userUpdate="UPDATE member SET bookingid=%s WHERE id=%s" #存入member table
-        mycursor.execute(userUpdate,userBookingId)
-        mysqlConnection.commit()#存入DB
-        storeBooking="INSERT INTO booking (id,attractionid,date,time,price) VALUES (%s,%s,%s,%s,%s)"#存景點
-        val=(findLastBookId,bookingId,bookingDate,bookingTime,bookingPrice)
-        mycursor.execute(storeBooking,val)
-        mysqlConnection.commit()#存入DB
-        response = {"ok":True}
-        return response
+        mycursor.execute("SELECT * from booking WHERE userid=%s"%(userId,))#取得booking資料表中的userid
+        fiindBooking=mycursor.fetchone() 
+        print(fiindBooking)
+        if not fiindBooking: #若找不到資料，表示booking表無資料，直接存入
+            storeBooking="INSERT INTO booking (attractionid,date,time,price,userid) VALUES (%s,%s,%s,%s,%s)"#存景點
+            val=(bookingId,bookingDate,bookingTime,bookingPrice,userId)
+            mycursor.execute(storeBooking,val)
+            mysqlConnection.commit()#存入DB
+            response = {"ok":True}
+            return response
+        else:#表示有找到，用update的方式修改資料
+            userUpdate="UPDATE booking SET attractionid=%s,date=%s,time=%s,price=%s WHERE userid=%s;" #更新booking表 table
+            updateVal=(bookingId,bookingDate,bookingTime,bookingPrice,userId)
+            mycursor.execute(userUpdate,updateVal)
+            mysqlConnection.commit()#存入DB
+            response = {"ok":True}
+            return response
     except Exception as e:
         print(e)
         return jsonify({"error":True,"message":"伺服器內部錯誤"},500)
@@ -201,21 +202,86 @@ def deleteBooking_date(userId):
     try:
         mysqlConnection=connection_pool.get_connection()
         mycursor=mysqlConnection.cursor()
-        mycursor.execute("SELECT * from member WHERE id=%s" %(userId,))
-        member=mycursor.fetchone()
-        bookingId=member[4] #找到該會員的bookingId print("member",member,"bookingId",bookingId)
-        mycursor.execute("DELETE from booking WHERE id=%s" % (bookingId,))
+        mycursor.execute("DELETE from booking WHERE userid=%s" % (userId,))
         mysqlConnection.commit()
         print(mycursor.rowcount, "record(s) deleted")
-        mycursor.execute("""UPDATE member SET bookingid=%s WHERE id=%s""" , (None,userId)) #更新會員的booking為Null
-        mysqlConnection.commit()
-        print(mycursor.rowcount, "record(s) updated")
         response={"ok": True}
         return response
     except Exception as e:
         print(e)
         return jsonify({"error":True,"message":"伺服器內部錯誤"},500)
 
+    finally:
+        if mysqlConnection.in_transaction:
+            mysqlConnection.rollback()
+        closePool(mysqlConnection,mycursor)
+
+#GET ORDER BY NUMBER
+def getOrder_data(orderNumber):
+    try:
+        mysqlConnection=connection_pool.get_connection()
+        mycursor=mysqlConnection.cursor()
+        mycursor.execute("SELECT orderdata.*,attraction.name,attraction.address,attraction.images from orderdata JOIN attraction ON orderdata.attractionid=attraction.id WHERE orderdata.number = %s"%(orderNumber))#根據orderNumber找出order資料
+        orderRawData=mycursor.fetchone() #找到該景點order
+        orderData = dict(zip(mycursor.column_names,orderRawData))
+        number=orderData["number"]
+        price=orderData["tripprice"]
+        attractionid=orderData["attractionid"]
+        name=orderData["name"]
+        address=orderData["address"]
+        image=json.loads(orderData["images"])[0]
+        tripdate=orderData["tripdate"]
+        triptime=orderData["triptime"]
+        contactname=orderData["contactname"]
+        contactemail=orderData["contactemail"]
+        contactphone=orderData["contactphone"]
+        response={
+              "data": {
+                "number": number,
+                "price": price,
+                "trip": {
+                  "attraction": {
+                    "id": attractionid,
+                    "name": name,
+                    "address": address,
+                    "image": image
+                  },
+                  "date": tripdate,
+                  "time": triptime
+                },
+                "contact": {
+                  "name": contactname,
+                  "email": contactemail,
+                  "phone": contactphone
+                },
+                "status": 1
+              }
+            }
+        print(response)
+        return response
+        mycursor.execute("SELECT orderdata.*,attraction.name,attraction.address,attraction.images,member.id,member.name from orderdata JOIN attraction ON orderdata.attractionid=attraction.id ")
+
+    except Exception as e:
+        print(e)
+        return jsonify({"error":True,"message":"伺服器內部錯誤"},500)
+    finally:
+        if mysqlConnection.in_transaction:
+            mysqlConnection.rollback()
+        closePool(mysqlConnection,mycursor)
+
+#POST ORDER
+def postOrder_data(currentTime,attractionid,userid,contactName,contactEmail,contactPhone,date,price,time):
+    try:
+        mysqlConnection=connection_pool.get_connection()
+        mycursor=mysqlConnection.cursor()
+        #存入order Table
+        orderInsert="""INSERT INTO orderdata (number,attractionid,userid,contactname,contactemail,contactphone,tripdate,tripprice,triptime) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
+        orderdata=(currentTime,attractionid,userid,contactName,contactEmail,contactPhone,date,price,time)
+        mycursor.execute(orderInsert,orderdata)
+        mysqlConnection.commit()
+    except Exception as e:
+        print(e)
+        return  jsonify({"error":True,"message":"伺服器內部錯誤"},500)
     finally:
         if mysqlConnection.in_transaction:
             mysqlConnection.rollback()

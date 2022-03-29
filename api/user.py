@@ -1,27 +1,35 @@
-from flask import Blueprint, jsonify, request, make_response,session,redirect, url_for
+from flask import Blueprint, jsonify, request, make_response,session, url_for
 from dotenv import load_dotenv
 from model.model import signIn_data,signUp_data
-import os,re
+import os,re,jwt,datetime
+from werkzeug.security import generate_password_hash, check_password_hash
 
 load_dotenv()
 
 api_user = Blueprint("api_user", __name__)
+jwtKey=os.getenv("JWTKEY")
 
 #取得使用者資訊 GET
 @api_user.route("/user", methods=["GET"])
 def getUser():
-    if "user" in session: #確認使用者是否存在session
-        id=session["user"]["id"]
-        name=session["user"]["name"]
-        email=session["user"]["email"]
-        response={
-            "id":id,
-            "name":name,
-            "email":email}        # print(response)
-        return jsonify(response)
-    else:
-        session.pop('user', None)
-        return jsonify({ "data": None })
+    jwtCookie=request.cookies.get("token")
+    # print("firstjwt",jwtCookie)
+    if not jwtCookie:
+        return jsonify({"data":None})
+    decodeJwt=jwt.decode(jwtCookie, jwtKey, algorithms='HS256') #cookie decode
+    # print(decodeJwt)
+    return make_response(jsonify(decodeJwt))
+    # if current_user: #確認使用者是否存在session
+    # # userdata=signIn_data(current_user)
+    #     id=userdata["id"]
+    #     name=userdata["name"]
+    #     email=userdata["email"]
+    #     response={
+    #         "id":id,
+    #         "name":name,
+    #         "email":email}        # print(response)
+    #     return jsonify(response)
+
 
 # 登入PATCH
 @api_user.route("/user", methods=["PATCH"])
@@ -34,19 +42,26 @@ def signIn():
         response={"error": True,"message":"帳號密碼錯誤"}
         return make_response(jsonify(response),400)
     if findone:
-        userpassword=findone[3]
-        if password !=userpassword: #檢查密碼是否與資料相符，若無則返回錯誤
+        hashpassword=findone[3]
+        checkPassword=check_password_hash(hashpassword,password)
+        if not checkPassword: #檢查密碼是否與資料相符，若無則返回錯誤
             response={"error": True,"message":"帳號密碼錯誤"}
             return make_response(jsonify(response),400)
-        session["user"]={ #將使用者存入session
-                "id":findone[0],
-                "name":findone[1],
-                "email":findone[2],
-                }
+        userdata={"id":findone[0],"name":findone[1],"email":findone[2]}
+        datetime_now = datetime.datetime.now()
+        time_range = datetime.timedelta(days = 1) # 一天
+        new_time = datetime_now + time_range # 查看一小時後的時間
+        token=jwt.encode(userdata, jwtKey, algorithm='HS256') # 產生 JWT
         response= make_response(jsonify({"ok":True}))
-        response.headers["Access-Control-Allow-Origin"]= "*"
+        response.set_cookie("token", value=token, expires=new_time, samesite='Lax')#將jwt存入cookie
+        print("patch",response)
         return response
-
+         # userdata={"id":findone[0],"name":findone[1],"email":findone[2]}
+        # session["user"]={ #將使用者存入session
+        #         "id":findone[0],
+        #         "name":findone[1],
+        #         "email":findone[2],
+        #         }
 #註冊POST
 @api_user.route("/user", methods=["POST"])
 def signUp():
@@ -56,7 +71,7 @@ def signUp():
     signPassword=signUpRequest["signPassword"]
     # print(signUpRequest)
     if request.method =="POST":        
-        checkEmail=re.compile(r'[^@]+@[^@]+\.[^@]+') #檢查mail格式
+        checkEmail=re.compile(r'^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$') #檢查mail格式
         if(not checkEmail.match(signEmail)):
             reponse={
                 "error":True,
@@ -69,13 +84,18 @@ def signUp():
                 "message":"密碼需符合8碼數字+英文大小寫各一"
             }
             return make_response(jsonify(reponse)) 
-        response=signUp_data(signName,signEmail,signPassword) #連接database使用者註冊
+        hashsignPassword= generate_password_hash(signPassword)
+        response=signUp_data(signName,signEmail,hashsignPassword) #連接database使用者註冊
         return make_response(jsonify(response)),{"Access-Control-Allow-Origin": "*"}
 
 #登出使用者DELETE
 @api_user.route("/user", methods=["DELETE"])
 def signOut():
-    session.pop('user', None)
     response=make_response(jsonify({"ok":True}))
     response.headers["Access-Control-Allow-Origin"]= "*"
+    response.set_cookie("token", value="") # 把 JWT 的 cookie 刪除
     return response
+    # session.pop('user', None)
+    # jwt = get_jwt()["jwt"]
+    # print(jwt)
+    # jwt_redis_blocklist.set(jwt, "")
