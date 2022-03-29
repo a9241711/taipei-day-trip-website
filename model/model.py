@@ -1,6 +1,4 @@
 import os,json
-from tkinter import E
-from urllib import response
 import mysql.connector.pooling
 from flask import  jsonify
 from dotenv import load_dotenv
