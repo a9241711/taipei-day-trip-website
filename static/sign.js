@@ -170,13 +170,15 @@ function popUpController(){
         signinForm.setAttribute("style", "animation:none");
     })
     //切換至註冊視窗
-    signinA.addEventListener("click",()=>{
+    signinA.addEventListener("click",(e)=>{
+        e.preventDefault();
         signin.setAttribute("style", "transform: scale(0); ");
         signinForm.setAttribute("style", "animation:none");
         signup.setAttribute("style", "display:block; ");
     })
     //切換至登入視窗
-    signupA.addEventListener("click",()=>{
+    signupA.addEventListener("click",(e)=>{
+        e.preventDefault();
         signup.setAttribute("style", "display:none; ");
         signin.setAttribute("style", "display:block; transform: scale(1); ");
     })

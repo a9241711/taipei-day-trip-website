@@ -175,6 +175,7 @@ def postBooking_data(userId,bookingId,bookingDate,bookingTime,bookingPrice):
         if not fiindBooking: #若找不到資料，表示booking表無資料，直接存入
             storeBooking="INSERT INTO booking (attractionid,date,time,price,userid) VALUES (%s,%s,%s,%s,%s)"#存景點
             val=(bookingId,bookingDate,bookingTime,bookingPrice,userId)
+            print("val",val)
             mycursor.execute(storeBooking,val)
             mysqlConnection.commit()#存入DB
             response = {"ok":True}

@@ -3,10 +3,17 @@
 let attractionData
 // 輪播圖片設定
 let slideIndex=1;
-let bookingBtn=document.querySelector(".booking-btn"); //提交booking的按鈕
+
 let atttractionUrl =location.href; //取得網址
-let urlNum=atttractionUrl.split("/")[atttractionUrl.split("/").length - 1] //取最後ID值
+let url=atttractionUrl.split("/")[atttractionUrl.split("/").length - 1] //取最後ID值
 //Model區 取得資料
+//過濾掉不必要的字符
+function filterUrl(str){
+    let pattern=/[`~!@#$^&*()=|{}':;',\\\[\]\.<>\/?~！@#￥……&*（）——|{}【】'；：""'。，、？]/g;
+    return str.replace(pattern,"");
+}
+let urlNum=filterUrl(url);
+console.log(urlNum);
 //fetch
 async function getIdFetch(){
     try{
@@ -140,6 +147,7 @@ function hideEffect(){
 
 //POST預定行程
 function getBookingPost(){
+    let bookingBtn=document.querySelector(".booking-btn"); //提交booking的按鈕
     bookingBtn.addEventListener("click", async(e)=>{
         e.preventDefault();
         let attractionId=urlNum;
