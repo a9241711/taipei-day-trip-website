@@ -87,8 +87,6 @@ main .attraction-reservation .connect-form{
 }
 main .attraction-reservation .reservation-form .connect-form>div,.payment-form>div{
     margin: 20px 0;
-    display: flex;
-    align-items: center;
 }
 main .attraction-reservation .reservation-form .payment-form{
     border-top: 1px solid #E8E8E8;
@@ -113,12 +111,14 @@ main .attraction-reservation form input, .tpfield{
     color: #757575;
     padding-left: 10px;
 }
-
+.payment-form .payment-div{
+    display: flex;
+    align-items: center;
+}
 /* Button */
 .order-submitDiv{
     display: flex;
     flex-direction: column;
-    padding-right: 10%;
     float: right;
 }
 .order-submitDiv button{
@@ -158,13 +158,14 @@ main{
 /* 刪除按鈕 */
 main .attraction-content .delete{
     position: absolute;
-    top: unset;
     bottom: -5%;
-    right: 5%;
+    right: 0;
 }
 main .attractionImge{
     width: 100%;
     margin-bottom: 30px;
 }
-
+main .attraction-book{
+    padding: 0;
+}
 }

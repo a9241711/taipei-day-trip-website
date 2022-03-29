@@ -58,7 +58,7 @@ async function getBooking(){
         }
         if(getBookingData["error"]){
             alert("請先登入帳號");
-            window.location="/";
+            window.location.replace("/")
         }
         if(getBookingData["data"]){
             attractionImge.src=getBookingData["data"]["attraction"]["image"] //景點圖片
@@ -145,7 +145,6 @@ document.addEventListener("DOMContentLoaded",()=>{
     getBookingInitail()
     deleteBookBtn();
     checkPhone();
-
 })
 
 
