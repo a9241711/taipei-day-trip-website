@@ -2,21 +2,21 @@
 {%block title %} Booking {% endblock%}
 {%block css%} <link rel="stylesheet" href= {{ url_for('static', filename='booking.css')}}>{% endblock%}
 {%block main %}
-<main>
+<main class="main">
+    <h3 class="reservation-title"></h3>
      <div class="attraction-content">  
         <div class="delete"><img src= {{ url_for('static', filename='icon/icon_delete.png')}} alt=""></div>
-        <h3 class="reservation-title">您好，##，待預定行程如下</h3>
         <div class="attractionImge">
-            <img src="https://picsum.photos/500/400/?random=10">
+            <img id="attractionImge" src="">
             </div>
          <div class="attraction-book">
-            <h3 class="attractionTitle">台北一日遊:平安鐘</h3>
+            <h3 class="attractionTitle"></h3>
            
             <div class="book-content">
-                <div><p class="book-title">日期：</p><p class="book-info">2021-04-23</p></div>
-                <div><p class="book-title">時間：</p><p class="book-info">上午9點到下午2點</p></div>
-                <div><p class="book-title">費用：</p><p class="book-info">新台幣2000元</p></div>
-                <div><p class="book-title">地點：</p><p class="book-info">臺北市 大安區忠孝東路4段</p></div>
+                <div><p class="book-title">日期：</p><p class="book-info"></p></div>
+                <div><p class="book-title">時間：</p><p class="book-info"></p></div>
+                <div><p class="book-title">費用：</p><p class="book-info"></p></div>
+                <div><p class="book-title">地點：</p><p class="book-info"></p></div>
             </div>
          </div>
      </div>
@@ -26,40 +26,54 @@
             <div class="connect-form">
             <div>
                 <label>聯絡姓名：</label>
-                <input type="text" placeholder="請輸入姓名">
+                <input type="text" placeholder="請輸入姓名" class="connection-form-name" >
             </div>
             <div>
                 <label>聯絡信箱：</label>
-                <input type="email" placeholder="請輸入電子郵件">
+                <input type="email" placeholder="請輸入電子郵件" class="connection-form-email" >
             </div>
             <div>
                 <label>聯絡電話：</label>
-                <input type="tel" id="phone" placeholder="0912345678" maxlength="10" pattern="(09)+[0-9]{8}" title="請輸入10碼手機號碼">
+                <input type="tel" id="phone" placeholder="請輸入手機09" maxlength="10" pattern="(09)+[0-9]{8}" class="connection-form-phone">
             </div>
             <p class="book-title">請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。</p>
             </div>
-
-            <div class="payment-form">
+             <div class="payment-form">
                 <h3 class="reservation-title">信用卡付款資訊</h3>
-            <div>
+            <div class="payment-div">
                 <label>卡片號碼：</label>
-                <input id="creditCard" type="tel" inputmode="numeric" pattern="[0-9\s]{13,16}" maxlength="16" placeholder="xxxx xxxx xxxx xxxx" title="請輸入13~16碼銀行帳號">
+                <!-- <div class="tpfield" id="card-number"></div>  -->
+                <div  class="tpfield" id="card-number" >  </div>
             </div>
-            <div>
+            <div class="payment-div">
                 <label>過期時間：</label>
-                <input id="expire" type="tel" pattern="\d*" maxlength="5" placeholder="MM/YY" title="請輸入正確日期格式">
+                <!-- <div class="tpfield" id="card-expiration-date"> -->
+                <div  class="tpfield" id="card-expiration-date" > </div>
             </div>
-            <div>
-                <label>驗證密碼：</label>
-                <input id="cardPasssword" type="tel" maxlength="4" placeholder="CVV" pattern="[0-9]*" inputmode="numeric" title="請輸入正確驗證號碼格式">
+            <div class="payment-div">
+            <label>驗證密碼：</label>
+            <!-- <div class=" tpfield" id="card-ccv"></div>  -->
+                <div class="tpfield" id="card-ccv" ></div> 
             </div>
-            <div class="book-submitDiv">
-                <p class="book-submitTitle">總價：新台幣 2000 元</p>
-                <button class="book-submit">確認訂購並付款</button>
+             <!-- <div class="tpfield" id="card-number"></div>
+            <div class="tpfield" id="card-expiration-date"></div>
+            <div class=" tpfield" id="card-ccv"></div> -->
+            <div class="order-submitDiv">
+                <p class="order-price"></p>
+                <button class="order-submit" >確認訂購並付款</button>
+            </div>
             </div>
         </form>
+        <br>
+        <pre class="jumbotron text-left" id="curl">
+        </pre>
         </div>
      </div>
 </main>
 {% endblock%}
-{% block js%} <script src={{ url_for('static', filename='booking.js')}}></script>{% endblock%}
+{% block js%} 
+<script src="https://js.tappaysdk.com/tpdirect/v5.8.0"></script>
+<script src={{ url_for('static', filename='booking.js')}}></script>
+<script src={{ url_for('static', filename='order.js')}}></script>
+
+{% endblock%}

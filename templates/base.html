@@ -5,12 +5,16 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{%block title%}{% endblock %}</title>
-    {% block css%}{% endblock%}
-    <link rel="stylesheet" href={{ url_for('static', filename='sign.css' ) }} >
     <link rel="stylesheet" href={{ url_for('static', filename='layout.css' ) }} >
+    <link rel="stylesheet" href={{ url_for('static', filename='sign.css' ) }} >
+    {% block css%}{% endblock%}
+
 
 </head>
 <body>
+  <div class="div-loader">
+    <div class="loader"></div>
+    </div>
   <div class="signin">
     <div class="form-container signin-form" >
       <h3>登入會員帳號</h3>
@@ -22,7 +26,7 @@
     <button type="submit" class="form-btn signIn-btn">登入帳號</button>
     <p style="display: none;" class="errorSignin"></p>
     <div class="form-txt">
-      <p>還沒有帳號？</p><a href="#" class="signin-a">點此註冊</a>
+      <p>還沒有帳號？</p><a href="" class="signin-a">點此註冊</a>
     </div>
     </div>
   </div>
@@ -38,18 +42,16 @@
     <button type="submit" class="form-btn signUp-btn">註冊新帳號</button>
     <p style="display: none;" class="errorSignup"></p>
     <div class="form-txt">
-      <p>已經有帳戶？</p><a href="#" class="signup-a">點此登入</a>
+      <p>已經有帳戶？</p><a href="" class="signup-a">點此登入</a>
     </div>
   </div>
   </div>
-  <div class="div-loader">
-  <div class="loader"></div>
-  </div>
+
         <header >
           <div class="header-content">
           <div class="header-title"><a href="{{ url_for('index') }}">台北一日遊</a> </div>
           <div class="header-nav">
-              <a href="{{ url_for('booking') }}">預定行程</a>
+              <a href="" class="book-link">預定行程</a>
               <a href="" class="sign-link">登入/註冊</a>
               <a href="" class="signOut">登出</a>
           </div>
@@ -65,8 +67,9 @@
         <footer class="footer">
           <p>COPYRIGHT @2022台北一日遊</p>
         </footer>
-      <script src={{ url_for('static', filename='sign.js' ) }}></script>
+        <script src={{ url_for('static', filename='sign.js' ) }}></script>
       {% block js%}{% endblock%}
+
 
 </body>
 </html>

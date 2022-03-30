@@ -2,6 +2,7 @@ from flask import *
 from api.attraction import api_attraction
 from api.user import api_user
 from api.booking import api_booking
+from api.order import api_order
 import os
 
 
@@ -11,6 +12,7 @@ app.config["TEMPLATES_AUTO_RELOAD"] = True
 app.register_blueprint(api_attraction, url_prefix="/api")
 app.register_blueprint(api_user, url_prefix="/api")
 app.register_blueprint(api_booking, url_prefix="/api")
+app.register_blueprint(api_order,url_prefix="/api")
 app.secret_key =os.getenv("SESSIONKEY")   # session的密鑰
 # app.config["PERMANENT_SESSION_LIFETIME"] = 600  # Session過期時間
 # Pages

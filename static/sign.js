@@ -11,16 +11,17 @@ let signup =document.querySelector(".signup");//註冊表單
 let signupA=document.querySelector(".signup-a");//轉換登入彈出頁面
 let signUpBtn=document.querySelector(".signUp-btn");//註冊送出按鈕
 let signOutBtn =document.querySelector(".signOut");//登出header
+let bookLink=document.querySelector(".book-link")
 //顯示文字相關變數
 let errorMessage //錯誤訊息
 let successMeg //成功訊息
 
 //***Model***//
 //Fetch取得使用者登入資訊GET
-let url='/api/user'
+let userUrl='/api/user'
 async function getSignInFetch(){
     try{
-        const response= await fetch(url)
+        const response= await fetch(userUrl);
         const data= await response.json();
         return data;
     }
@@ -33,7 +34,7 @@ async function getSignInFetch(){
 //Fetch使用者登入PATCH
 async function patchSignInFetch(email,password){
     try{
-        let response =await fetch(url,{
+        let response =await fetch(userUrl,{
             method:"PATCH",
             body:JSON.stringify({ 
                 email:email,
@@ -50,7 +51,7 @@ async function patchSignInFetch(email,password){
 //fetch使用者註冊POST
 async function postSignUpFetch(signName,signEmail,signPassword){
     try{
-        let response=await fetch(url,{
+        let response=await fetch(userUrl,{
             method:"POST",
             body:JSON.stringify({
                 signName:signName,
@@ -69,8 +70,8 @@ async function postSignUpFetch(signName,signEmail,signPassword){
 //fetch使用者登出DELETE
 async function deleteSignFetch(){
     try{
-        const response= await fetch(url,{
-            method:"DELETE"
+        const response= await fetch(userUrl,{
+            method:"DELETE",
         })
         const data= await response.json();
         return data;
@@ -85,20 +86,15 @@ async function deleteSignFetch(){
 
 //取得使用者登入資訊
 async function getUserView(){
-    //   await  fetch("/api/user").then((response)=>{
-    //         return response.json();
-    //      }).then((data)=>{
             let data=await getSignInFetch() //console.log(data)
-             if(data["data"]!==null){
+            // console.log(data)
+            if(data["data"]!==null){
                 signLink.setAttribute("style","display:none;")
                 signOutBtn.setAttribute("style","display:block;")
-                signOut();
-                
-             }else if(data["data"]===null){
+             }else if(data["data"]==null){
                 signLink.setAttribute("style","display:block;")
                 signOutBtn.setAttribute("style","display:none;")
              }
-        //  })
     }
     
 //登入畫面
@@ -109,7 +105,7 @@ function signInView(){
         let password =document.querySelector(".password").value;          
         let data = await patchSignInFetch(email,password);
             if(data["ok"]==true){
-                    successMeg="登入成功，重新導向"
+                    successMeg="登入成功，重新導向";
                     showSignInMessage(successMeg)
                     window.location.reload();
             }else{
@@ -155,15 +151,16 @@ function signUpView(){
 function signOut(){
     signOutBtn.addEventListener(("click"),async(e)=>{
         e.preventDefault(); //        console.log("signout")
-        await deleteSignFetch();
+        let res= await deleteSignFetch();
         window.location.reload();
     }) 
 }
+
+
 //顯示登入/註冊的彈窗
 function popUpController(){
     signLink.addEventListener("click",(e)=>{
         e.preventDefault();
-        // signin.classList.add("active");
         signin.setAttribute("style", "display:block; transform: scale(1); ");
         signinForm.setAttribute("style", "animation:formMove 1s");
     })
@@ -173,21 +170,34 @@ function popUpController(){
         signinForm.setAttribute("style", "animation:none");
     })
     //切換至註冊視窗
-    signinA.addEventListener("click",()=>{
+    signinA.addEventListener("click",(e)=>{
+        e.preventDefault();
         signin.setAttribute("style", "transform: scale(0); ");
         signinForm.setAttribute("style", "animation:none");
         signup.setAttribute("style", "display:block; ");
     })
     //切換至登入視窗
-    signupA.addEventListener("click",()=>{
+    signupA.addEventListener("click",(e)=>{
+        e.preventDefault();
         signup.setAttribute("style", "display:none; ");
         signin.setAttribute("style", "display:block; transform: scale(1); ");
-        // signinForm.setAttribute("style", "animation:none");
     })
     //關閉註冊視窗
     closeSignup.addEventListener("click",()=>{
         signup.setAttribute("style", "display:none; ");
     })
+    //booking預定行程按鈕
+    bookLink.addEventListener("click",async (e)=>{
+    e.preventDefault();
+    let data=await getSignInFetch();
+    if(data["data"]!==null){
+        window.location.href="/booking"
+    }else{
+        signin.setAttribute("style", "display:block; transform: scale(1); ");
+        signinForm.setAttribute("style", "animation:formMove 1s");
+        popUpController()
+    }
+})
 }
 
 //登入成功or失敗文字顯示
@@ -202,14 +212,31 @@ function showSignUpMessage(error){
     message.setAttribute("style","display:block;color:red;margin:0;");
     message.textContent=error;
 }
+//開啟載入中動畫
+function showEffect(){
+    let divLoader=document.querySelector(".div-loader")
+    let loader = document.querySelector(".loader");
+    divLoader.style.display="block";
+    loader.style.display="block";
+}
+//關閉載入中動畫
+function hideEffect(){
+    let divLoader=document.querySelector(".div-loader")
+    let loader = document.querySelector(".loader");
+    divLoader.style.display="none";
+    loader.style.display="none";
+}
 
 
 //***Controller***//
 getUserView(); //取得session登入驗證
 window.onload=function(){
+    // showEffect();
     popUpController();//彈出視窗
     signInView();//使用者登入
     signUpView()//使用者註冊
+    signOut();
+    // hideEffect();
 }
 
 

@@ -3,10 +3,17 @@
 let attractionData
 // 輪播圖片設定
 let slideIndex=1;
-let bookingBtn=document.querySelector(".booking-btn"); //提交booking的按鈕
+
 let atttractionUrl =location.href; //取得網址
-let urlNum=atttractionUrl.split("/")[atttractionUrl.split("/").length - 1] //取最後ID值
+let url=atttractionUrl.split("/")[atttractionUrl.split("/").length - 1] //取最後ID值
 //Model區 取得資料
+//過濾掉不必要的字符
+function filterUrl(str){
+    let pattern=/[`~!@#$^&*()=|{}':;',\\\[\]\.<>\/?~！@#￥……&*（）——|{}【】'；：""'。，、？]/g;
+    return str.replace(pattern,"");
+}
+let urlNum=filterUrl(url);
+console.log(urlNum);
 //fetch
 async function getIdFetch(){
     try{
@@ -84,8 +91,6 @@ function getIdData (){
     }
 }
 
-
-
 //選擇方向鍵時顯示圖片
 function plusSlides(n){
     // console.log("number",n,"index",slideIndex)
@@ -140,6 +145,45 @@ function hideEffect(){
     loader.style.display="none";
 }
 
+//POST預定行程
+function getBookingPost(){
+    let bookingBtn=document.querySelector(".booking-btn"); //提交booking的按鈕
+    bookingBtn.addEventListener("click", async(e)=>{
+        e.preventDefault();
+        let attractionId=urlNum;
+        let date = document.querySelector('input[name="date"]').value;
+        let price=document.querySelector('input[name="time"]:checked').value;
+        let time ;
+        if(price==2000){
+            time="moring";
+        }else{
+            time="afternoon";
+        }
+        console.log(attractionId,date,price,time)
+        let data= await postBooking(attractionId,date,time,price);
+        if(data["ok"]==true){
+            window.location="/booking"
+        }if (data["message"]=="尚未登入" ){
+            signin.setAttribute("style", "display:block; transform: scale(1); ");
+            signinForm.setAttribute("style", "animation:formMove 1s");
+            popUpController();
+            return
+        }
+        if(data["error"] ){
+            let attractionBook=document.querySelector(".attraction-book").children[2].lastElementChild;
+            attractionBook.insertAdjacentHTML("afterend", `<p style="color:red">${data["message"]}</p>`);
+            flag=false;
+        }
+    })
+}
+
+//date不可選今天以前的日期
+function minDate(){
+    let dateChoose=document.getElementsByName("date"); //getElementsByName回傳nodelist，需要用array選取
+    let today= new Date().toISOString().split("T")[0]; //取得當前的年月日
+    dateChoose[0].setAttribute("min",today);
+}
+
 //Controller區，操作function
 //畫面initial
 async function getInitail(){
@@ -150,32 +194,12 @@ async function getInitail(){
     hideEffect()
 }
 
-function getBookingPost(){
-    bookingBtn.addEventListener("click", async(e)=>{
-        e.preventDefault();
-        let attractionId=urlNum;
-        let date = document.querySelector('input[name="date"]').value;
-        let price=document.querySelector('input[name="time"]:checked').value;
-        let time 
-        if(price==2000){
-            time="moring";
-        }else{
-            time="afternoon";
-        }
-        console.log(attractionId,date,price,time)
-        let data= await postBooking(attractionId,date,time,price);
-        if(data["ok"]==true){
-            window.location="/booking"
-        }
-        else{
-            alert("錯誤")
-        }
-    })
-}
+
 
 
 //執行function
 document.addEventListener("DOMContentLoaded",()=>{
     getInitail();
-    getBookingPost()
+    getBookingPost();
+    minDate();
 })
