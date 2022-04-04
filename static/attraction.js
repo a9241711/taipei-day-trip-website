@@ -174,7 +174,7 @@ function getBookingPost(){
         }
         if(data["error"] ){
             let attractionBook=document.querySelector(".attraction-book").children[2].lastElementChild;
-            attractionBook.insertAdjacentHTML("afterend", `<p style="color:#448899;">${data["message"]}</p>`);
+            attractionBook.insertAdjacentHTML("afterend", `<p style="color:#448899; margin-top:20px;">${data["message"]}</p>`);
             flag=false;
         }
     })
