@@ -10,8 +10,13 @@ main {
 
 .thankyouDiv {
     width: 100%;
-    text-align: center;
     margin: auto;
+    display: grid;
+    justify-content: center;
+}
+
+.thankyouDivText {
+    width: 100%;
 }
 
 .thankyouDiv>p {
