@@ -1,1 +1,16 @@
 {% extends "base.html"%}
+{%block title %} Thankyou {% endblock%}
+{%block css%} <link rel="stylesheet" href= {{ url_for('static', filename='thankyou.css')}}>{% endblock%}
+{%block main %}
+<main>
+    <div class="thankyouDiv">
+
+    </div>
+    
+</main>
+{% endblock%}
+{% block js%} 
+
+<script src={{ url_for('static', filename='thankyou.js')}}></script>
+
+{% endblock%}

@@ -151,7 +151,8 @@ function signUpView(){
 function signOut(){
     signOutBtn.addEventListener(("click"),async(e)=>{
         e.preventDefault(); //        console.log("signout")
-        let res= await deleteSignFetch();
+        let res=await deleteSignFetch();
+        console.log(res)
         window.location.reload();
     }) 
 }
@@ -203,13 +204,13 @@ function popUpController(){
 //登入成功or失敗文字顯示
 function showSignInMessage(error){
     let message = document.querySelector(".errorSignin");
-    message.setAttribute("style","display:block;color:red;margin:0;");
+    message.setAttribute("style","display:block;color:#448899;margin-top:10px;");
     message.textContent=error;
 }
 //註冊成功or失敗文字顯示
 function showSignUpMessage(error){
     let message = document.querySelector(".errorSignup");
-    message.setAttribute("style","display:block;color:red;margin:0;");
+    message.setAttribute("style","display:block;color:#448899;margin-top:10px;");
     message.textContent=error;
 }
 //開啟載入中動畫

@@ -11,30 +11,24 @@ jwtKey=os.getenv("JWTKEY")
 @api_booking.route("/booking",methods=["GET"])
 def getBooking():
     jwtCookie=request.cookies.get("token")
-    print("firstjwt",jwtCookie)
     if not jwtCookie:
         return make_response(jsonify({"error":True,"message":"尚未登入"}),403)
     decodeJwt=jwt.decode(jwtCookie, jwtKey, algorithms='HS256')
-    # if "user" not in session:
-    # userId=session["user"]["id"] #取得登入帳號的會員ID print("bookinguserid",userId)
     userId=decodeJwt["id"]
     response=getBooking_data(userId)
-    print("get",response)
+    # print("get",response)
     return make_response(jsonify(response)), {"Access-Control-Allow-Origin": "*"}
-
+    # if "user" not in session:
+    # userId=session["user"]["id"] #取得登入帳號的會員ID print("bookinguserid",userId)
 
 #POST預定行程
 @api_booking.route("/booking",methods=["POST"])
 def postBooking():
     jwtCookie=request.cookies.get("token")
-    print("firstjwt",jwtCookie)
-    # if "user" not in session:
     if not jwtCookie:#若無cookie，則表示尚未登入
         return make_response(jsonify({"error":True,"message":"尚未登入"}),403)
-    # userId=session["user"]["id"] #取得登入帳號的會員ID print("bookinguserid",userId)
     decodeJwt=jwt.decode(jwtCookie, jwtKey, algorithms='HS256')
     userId=decodeJwt["id"]
-        # userId=session["user"]["id"] #取得登入帳號的會員ID print("bookinguserid",userId)
     bookingData=request.get_json()
     bookingId=bookingData["attractionId"] #預定景點ID
     bookingDate=bookingData["date"] #預定日期
@@ -43,25 +37,25 @@ def postBooking():
     if not bookingId or not bookingDate or not bookingTime or not bookingPrice:
         return make_response( jsonify({"error":True,"message":"資料有誤請重新輸入"}),400)
     response= postBooking_data(userId,bookingId,bookingDate,bookingTime,bookingPrice)
-    print(response)
+    # print(response)
     return jsonify(response)
+    # if "user" not in session:
+    # userId=session["user"]["id"] #取得登入帳號的會員ID print("bookinguserid",userId)
 
 #DELETE行程
 @api_booking.route("/booking",methods=["DELETE"])
 def deleteBooking():
-    # if "user" not in session:
-    #     return make_response(jsonify({"error":True,"message":"尚未登入"}),403)
-    # userId=session["user"]["id"] #取得登入帳號的會員ID print("bookinguserid",userId)
-    # response =deleteBooking_date(userId)
     jwtCookie=request.cookies.get("token")
     if not jwtCookie:
         return make_response(jsonify({"error":True,"message":"尚未登入"}),403)
     decodeJwt=jwt.decode(jwtCookie, jwtKey, algorithms='HS256')
-    # if "user" not in session:
-    # userId=session["user"]["id"] #取得登入帳號的會員ID print("bookinguserid",userId)
     userId=decodeJwt["id"]
-    # userId=session["user"]["id"] #取得登入帳號的會員ID print("bookinguserid",userId)
     response =deleteBooking_date(userId)
     print(response)
     return jsonify(response)
-   
+    # if "user" not in session:
+    #     return make_response(jsonify({"error":True,"message":"尚未登入"}),403)
+    # userId=session["user"]["id"] #取得登入帳號的會員ID print("bookinguserid",userId)
+    # response =deleteBooking_date(userId)
+    # if "user" not in session:
+    # userId=session["user"]["id"] #取得登入帳號的會員ID print("bookinguserid",userId)

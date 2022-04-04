@@ -48,13 +48,13 @@ def signIn():
             response={"error": True,"message":"帳號密碼錯誤"}
             return make_response(jsonify(response),400)
         userdata={"id":findone[0],"name":findone[1],"email":findone[2]}
-        datetime_now = datetime.datetime.now()
-        time_range = datetime.timedelta(days = 1) # 一天
-        new_time = datetime_now + time_range # 查看一小時後的時間
+        datetime_now = datetime.datetime.now()#取得當前的時間
+        time_range = datetime.timedelta(days = 1) # 取時間range為一天
+        new_time = datetime_now + time_range # 過期時間為當前時間後一天
         token=jwt.encode(userdata, jwtKey, algorithm='HS256') # 產生 JWT
         response= make_response(jsonify({"ok":True}))
-        response.set_cookie("token", value=token, expires=new_time, samesite='Lax')#將jwt存入cookie
-        print("patch",response)
+        response.set_cookie("token", value=token, expires=new_time, samesite='Lax')#將jwt存入cookie，取名token
+        # print("patch",response)
         return response
          # userdata={"id":findone[0],"name":findone[1],"email":findone[2]}
         # session["user"]={ #將使用者存入session
@@ -62,6 +62,7 @@ def signIn():
         #         "name":findone[1],
         #         "email":findone[2],
         #         }
+
 #註冊POST
 @api_user.route("/user", methods=["POST"])
 def signUp():

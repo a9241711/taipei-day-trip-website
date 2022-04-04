@@ -1,0 +1,36 @@
+/* 主內容頁 */
+main {
+    margin: 100px auto;
+    width: 1200px;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 10px;
+    align-items: center;
+}
+
+.thankyouDiv {
+    width: 100%;
+    text-align: center;
+    margin: auto;
+}
+
+.thankyouDiv>p {
+    display: inline-block;
+}
+
+footer {
+    height: 100vh;
+}
+
+/* 平板/手機畫面 */
+@media (min-width: 601px) and (max-width: 1200px) {
+    main {
+        width: 95%;
+    }
+}
+
+@media (min-width: 360px) and (max-width: 600px) {
+    main {
+        width: 95%;
+    }
+}

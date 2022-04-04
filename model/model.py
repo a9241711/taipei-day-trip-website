@@ -133,7 +133,7 @@ def getBooking_data(userId):
         bookingDate=bookingInformation[2]
         bookingTime=bookingInformation[3]
         bookingPrice=bookingInformation[4]
-        print("arractionId",arractionId)
+        # print("arractionId",arractionId)
         mycursor.execute("SELECT name,address,images from attraction WHERE id=%s"%(arractionId,))
         #取得景點資訊
         attractionInformation=mycursor.fetchone() #print("attractionInformation",attractionInformation)
@@ -154,7 +154,7 @@ def getBooking_data(userId):
             "price":bookingPrice
             }
         }
-        print(response)
+        # print(response)
         return response
     except Exception as e:
         print(e)
@@ -171,17 +171,17 @@ def postBooking_data(userId,bookingId,bookingDate,bookingTime,bookingPrice):
         mycursor=mysqlConnection.cursor()
         mycursor.execute("SELECT * from booking WHERE userid=%s"%(userId,))#取得booking資料表中的userid
         fiindBooking=mycursor.fetchone() 
-        print(fiindBooking)
+        # print(fiindBooking/)
         if not fiindBooking: #若找不到資料，表示booking表無資料，直接存入
             storeBooking="INSERT INTO booking (attractionid,date,time,price,userid) VALUES (%s,%s,%s,%s,%s)"#存景點
             val=(bookingId,bookingDate,bookingTime,bookingPrice,userId)
-            print("val",val)
+            # print("val",val)
             mycursor.execute(storeBooking,val)
             mysqlConnection.commit()#存入DB
             response = {"ok":True}
             return response
         else:#表示有找到，用update的方式修改資料
-            userUpdate="UPDATE booking SET attractionid=%s,date=%s,time=%s,price=%s WHERE userid=%s;" #更新booking表 table
+            userUpdate="UPDATE booking SET attractionid=%s,date=%s,time=%s,price=%s WHERE userid=%s" #更新booking表 table
             updateVal=(bookingId,bookingDate,bookingTime,bookingPrice,userId)
             mycursor.execute(userUpdate,updateVal)
             mysqlConnection.commit()#存入DB
@@ -234,6 +234,7 @@ def getOrder_data(orderNumber):
         contactname=orderData["contactname"]
         contactemail=orderData["contactemail"]
         contactphone=orderData["contactphone"]
+        status=orderData["status"]
         response={
               "data": {
                 "number": number,
@@ -253,12 +254,11 @@ def getOrder_data(orderNumber):
                   "email": contactemail,
                   "phone": contactphone
                 },
-                "status": 1
+                "status": status
               }
             }
         print(response)
         return response
-        mycursor.execute("SELECT orderdata.*,attraction.name,attraction.address,attraction.images,member.id,member.name from orderdata JOIN attraction ON orderdata.attractionid=attraction.id ")
 
     except Exception as e:
         print(e)
@@ -269,15 +269,27 @@ def getOrder_data(orderNumber):
         closePool(mysqlConnection,mycursor)
 
 #POST ORDER
-def postOrder_data(currentTime,attractionid,userid,contactName,contactEmail,contactPhone,date,price,time):
+def postOrder_data(currentTime,attractionid,userid,contactName,contactEmail,contactPhone,date,price,time,status):
     try:
         mysqlConnection=connection_pool.get_connection()
         mycursor=mysqlConnection.cursor()
+        isOrderExisting="SELECT * from orderdata WHERE number=%s" %(currentTime)
+        mycursor.execute(isOrderExisting)
+        findOrderData=mycursor.fetchone() #找到現有訂單
+        # print("modelCurrentTime",currentTime,"findOrderData",findOrderData)
+        if findOrderData:
+            updateData="UPDATE orderdata SET status=%s WHERE number=%s"
+            updateValue=(status,currentTime)
+            # print("updateValue",updateValue)
+            mycursor.execute( updateData,updateValue)
+            mysqlConnection.commit()
+            return jsonify({"status":status,"message":"update success"})
         #存入order Table
-        orderInsert="""INSERT INTO orderdata (number,attractionid,userid,contactname,contactemail,contactphone,tripdate,tripprice,triptime) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
-        orderdata=(currentTime,attractionid,userid,contactName,contactEmail,contactPhone,date,price,time)
+        orderInsert="""INSERT INTO orderdata (number,attractionid,userid,contactname,contactemail,contactphone,tripdate,tripprice,triptime,status) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
+        orderdata=(currentTime,attractionid,userid,contactName,contactEmail,contactPhone,date,price,time,status)
         mycursor.execute(orderInsert,orderdata)
         mysqlConnection.commit()
+        return jsonify({"message":"Commit data success"})
     except Exception as e:
         print(e)
         return  jsonify({"error":True,"message":"伺服器內部錯誤"},500)

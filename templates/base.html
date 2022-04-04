@@ -46,28 +46,23 @@
     </div>
   </div>
   </div>
-
-        <header >
-          <div class="header-content">
-          <div class="header-title"><a href="{{ url_for('index') }}">台北一日遊</a> </div>
-          <div class="header-nav">
-              <a href="" class="book-link">預定行程</a>
-              <a href="" class="sign-link">登入/註冊</a>
-              <a href="" class="signOut">登出</a>
-          </div>
-        </div>
-        </header>
-        
-        
-        {%block main%}
-
-          {% endblock %}
-       
- 
-        <footer class="footer">
-          <p>COPYRIGHT @2022台北一日遊</p>
-        </footer>
-        <script src={{ url_for('static', filename='sign.js' ) }}></script>
+    <header >
+      <div class="header-content">
+      <div class="header-title"><a href="{{ url_for('index') }}">台北一日遊</a> </div>
+      <div class="header-nav">
+          <a href="" class="book-link">預定行程</a>
+          <a href="" class="sign-link">登入/註冊</a>
+          <a href="" class="signOut">登出</a>
+      </div>
+    </div>
+    </header>
+    {%block main%}
+      {% endblock %}
+    
+    <footer class="footer">
+      <p>COPYRIGHT @2022台北一日遊</p>
+    </footer>
+    <script src={{ url_for('static', filename='sign.js' ) }}></script>
       {% block js%}{% endblock%}
 
 
