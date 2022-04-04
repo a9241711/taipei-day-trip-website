@@ -26,7 +26,7 @@ def postOrder():
     orderRequest=request.get_json()
     userId=userdata["id"]
     currentTime=now.strftime("%Y%m%d%H%M%S")
-    print("currentTime",currentTime,userdata,"orderRequest",orderRequest)
+    # print("currentTime",currentTime,userdata,"orderRequest",orderRequest)
     prime=orderRequest["prime"]
     contactPhone=orderRequest["contact"]["phone"]
     contactName=orderRequest["contact"]["name"]
@@ -63,9 +63,8 @@ def postOrder():
     tapPayurl='https://sandbox.tappaysdk.com/tpc/payment/pay-by-prime'    # print("data",tapPaydata)
     tapRequest = requests.post(tapPayurl, json=tapPaydata, headers=tapPayHeaders)
     ResponseFromTap =tapRequest.json()
-    print("ResposeFromTap",ResponseFromTap["status"])
+    # print("ResposeFromTap",ResponseFromTap["status"])
     if(ResponseFromTap["status"]==0):#若TapPay回傳成功則回傳資料到SERVER，更新status=0
-        # print(currentTime,attractionid,userId,contactName,contactEmail,contactPhone,date,price,time)
         status=ResponseFromTap["status"]
         postOrder_data(currentTime,attractionid,userId,contactName,contactEmail,contactPhone,date,price,time,status)
         reponseToClient={

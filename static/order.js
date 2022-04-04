@@ -101,17 +101,16 @@ function submitonClick() {
         let getBookingTime=getBookingData["data"]["time"]
         //Post order to Server
         let data=await postOrderFecth(prime,getBookingPrice,getBookingAttrction,getBookingDate,getBookingTime,connectionName,connectionEmail,connectionPhone)
-        console.log(data)
+        // console.log(data)
         if(data["error"]==true){//若回傳錯誤，則顯示錯誤訊息
-            document.querySelector('#errorMessge').innerHTML= `<p style='color:#448899;'>${data["message"]}</p>`
+            document.querySelector('#curl').innerHTML= `<p style='color:#448899;'>${data["message"]}</p>`
         }else{//若回傳成功則顯示成功訊息
-            console.log(data);
+            // console.log(data);
             let successMes=data["data"]["payment"]["message"]
             orderNumber=data["data"]["number"]
             document.querySelector('#curl').innerHTML= `
             <p style='color:#448899;'>${successMes}頁面重新導向...</p>
             `;
-            document.querySelector('#curl').innerHTML ="<p style='color:#448899;'>信用卡欄位資訊有誤</p>"
             window.location.href=`/thankyou?number=${orderNumber}`;
         }
         })
