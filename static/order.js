@@ -1,6 +1,39 @@
-
-//POST ORDER
+//***Model***//
+//POST fetch to Server
+async function postOrderFecth(prime,getBookingPrice,getBookingAttrction,getBookingDate,getBookingTime,connectionName,connectionEmail,connectionPhone){
+    try{
+        let postOrder=await fetch("/api/orders",{
+            method:"POST",
+            headers:{"content-type":"application/json"},
+            body:JSON.stringify({
+                prime:prime,
+                order:{
+                        price:getBookingPrice,
+                        trip:{
+                            attraction:getBookingAttrction,
+                        },
+                        date:getBookingDate,
+                        time:getBookingTime,
+                },                
+                contact: {
+                        name: connectionName,
+                        email: connectionEmail,
+                        phone: connectionPhone,
+                    },
+                    })
+                })
+            let data =await postOrder.json();
+            return data
+    }
+    catch(message){
+        throw Error("Error",message);
+    }
+}
+//SetUp TapPay SDK
 TPDirect.setupSDK(123852, 'app_eMCFmXPIIgjzbruUocYi0e2i5mTA7wU0YJ3SuudxbbkZnKOq0kS2UTFmj2gk', 'sandbox')
+
+
+//***POST ORDER View***//
 // Display ccv field
 TPDirect.card.setup({
     fields: {
@@ -43,72 +76,63 @@ TPDirect.card.setup({
 })
 
 function submitonClick() {
-    let connectionEmail=document.querySelector(".connection-form-email");//聯絡信箱
-    let connectionName=document.querySelector(".connection-form-name");//聯絡姓名
-    let connectionPhone=document.querySelector(".connection-form-phone");//聯絡電話
-    // fix keyboard issue in iOS device
-    // forceBlurIos()
+    let connectionName=document.querySelector(".connection-form-name").value;//聯絡姓名
+    let connectionEmail=document.querySelector(".connection-form-email").value;//聯絡信箱
+    let connectionPhone=document.querySelector(".connection-form-phone").value;//聯絡電話
     const tappayStatus = TPDirect.card.getTappayFieldsStatus()
     // Check TapPay Fields Status is can get prime
     if (tappayStatus.canGetPrime === false) {
-        document.querySelector('#curl').innerHTML ="<p '>欄位資訊有誤</p>"
+        document.querySelector('#curl').innerHTML ="<p style='color:#448899;'>信用卡欄位資訊有誤</p>"
         return
     }
-
-    // 讓 button click 之後觸發 getPrime 方法
+    //  getPrime 後執行以下
     TPDirect.card.getPrime(async function (result) {
-        console.log(result);
         if (result.status !== 0) {
-            console.err('getPrime 錯誤')
-            alert("getPrime 錯誤")
+            alert("信用卡授權資料錯誤")
             return
         }
-        var prime = result.card.prime
-        // alert('getPrime 成功: ' + prime);
-    //取得booking資料
-    let getBookingData= await getBookingFetch();
-    console.log("attraction",getBookingData["data"])
-    fetch('/api/orders',{
-            method:"POST",
-            headers: {"content-type": "application/json"},
-            body:JSON.stringify({
-                prime:prime,
-                order:{
-                    price:getBookingData["data"]["price"],
-                    trip:{
-                        attraction:getBookingData["data"]["attraction"],
-                    },
-                    date:getBookingData["data"]["date"],
-                    time:getBookingData["data"]["time"],
-                },                
-                contact: {
-                    "name": connectionName.value,
-                    "email": connectionEmail.value,
-                    "phone": connectionPhone.value,
-                    },
-            })
-        }).then((response)=>{return response.json()}).then((data)=>{
-            if(data["error"]==true){
-                document.querySelector('#curl').innerHTML= `<p style='color:red;'>${data["message"]}</p>`
-            }else{
-                console.log(data);
-                orderNumber=data["data"]["number"]
-                document.querySelector('#curl').innerHTML= `
-                <p style='color:red;'>${data["data"]["payment"]["message"]}</p>
-                <p style='color:red;'>您的訂單編號為${data["data"]["nubmer"]}，可點擊以下連結查詢</p>
-                <a href={{url_for()}}></a>
-                `;
-                window.location.href="/thankyou";
-            }
-            })
+        let prime = result.card.prime
+        //取得booking資料
+        let getBookingData= await getBookingFetch();// console.log("getBookingData",getBookingData["data"])
+        //設定要order Post的參數資料
+        let getBookingPrice=getBookingData["data"]["price"];
+        let getBookingAttrction=getBookingData["data"]["attraction"];
+        let getBookingDate=getBookingData["data"]["date"];
+        let getBookingTime=getBookingData["data"]["time"]
+        //Post order to Server
+        let data=await postOrderFecth(prime,getBookingPrice,getBookingAttrction,getBookingDate,getBookingTime,connectionName,connectionEmail,connectionPhone)
+        // console.log(data)
+        if(data["error"]==true){//若回傳錯誤，則顯示錯誤訊息
+            document.querySelector('#curl').innerHTML= `<p style='color:#448899;'>${data["message"]}</p>`
+        }else{//若回傳成功則顯示成功訊息
+            // console.log(data);
+            let successMes=data["data"]["payment"]["message"]
+            orderNumber=data["data"]["number"]
+            document.querySelector('#curl').innerHTML= `
+            <p style='color:#448899;'>${successMes}頁面重新導向...</p>
+            `;
+            window.location.href=`/thankyou?number=${orderNumber}`;
+            await fetchDeleteBooking();
+            
+            
+        }
+        })
+}
+
+
+
+//***Controller***//
+//送出付款
+function postBookingController(){
+    //送出Post按鈕
+    let orderSubmit =document.querySelector(".order-submit");
+    orderSubmit.addEventListener(("click"),(e)=>{
+        e.preventDefault();
+        submitonClick();
     })
 }
 
-let orderSubmit =document.querySelector(".order-submit");
-
-//送出付款
-orderSubmit.addEventListener(("click"),(e)=>{
-    e.preventDefault();
-    submitonClick();
-})
+window.onload=function(){
+    postBookingController();
+}
 

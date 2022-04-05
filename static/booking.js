@@ -46,7 +46,7 @@ async function getBooking(){
         let connectionName=document.querySelector(".connection-form-name");//聯絡姓名
         //取得並顯示會員姓名
         reservationTitle.textContent=`您好，${getUserData["name"]}，待預定行程如下：` ;
-        console.log(getBookingData)
+        // console.log(getBookingData,"getUserData","getUserData",getUserData)
         if(getBookingData==null){
             attractionContent.style.display="none";
             attractionReservation.style.display="none";
@@ -55,10 +55,11 @@ async function getBooking(){
             main.append(noneBooking);
             bookingFoot.style.height= "100%";
             hideEffect();
+            return
         }
-        if(getBookingData["error"]){
+        if(getBookingData["error"] ){
             alert("請先登入帳號");
-            window.location.replace("/")
+            window.location.href="/"
         }
         if(getBookingData["data"]){
             attractionImge.src=getBookingData["data"]["attraction"]["image"] //景點圖片
@@ -92,12 +93,9 @@ function deleteBookBtn(){
             let data = await fetchDeleteBooking()
             if(data["ok"] ==true){
                 window.location.reload();
-                // hideEffect();
             }
         })
 }
-
-// })
 
 
 //多個設置setattributes 的簡易function
@@ -107,27 +105,6 @@ function setAttributes(el,attr){
     }
 }
 
-//檢查手機格式
-function checkPhone(){
-let phoneValue=document.getElementById("phone");
-    phoneValue.addEventListener("blur",(e)=>{
-        let value =e.target.value;
-        let checkInput=/(09)+[0-9]{8}/
-        if (!value.match(checkInput)){
-           if(document.getElementById("errorPhone")){//若已有errorP則移除
-            phoneValue.parentNode.removeChild(phoneValue.parentNode.lastChild);
-           }
-            let errorP=document.createElement("p");
-            setAttributes(errorP,{"style":"color:red;","id":"errorPhone"});//call setAttributes
-            errorP.textContent="手機格式錯誤，請重新輸入"
-            phoneValue.parentNode.appendChild(errorP)
-        }else{
-            if(document.getElementById("errorPhone")){
-                phoneValue.parentNode.removeChild(phoneValue.parentNode.lastChild);
-            }
-        }
-    })
-}
 
 
 ///**Control */
@@ -135,20 +112,39 @@ let phoneValue=document.getElementById("phone");
 
 //畫面initial
 async function getBookingInitail(){
-    showEffect()
     await getBooking();
-    hideEffect()
 }
 
 
 document.addEventListener("DOMContentLoaded",()=>{
     getBookingInitail()
     deleteBookBtn();
-    checkPhone();
+    signOut();
 })
 
 
 
+//檢查手機格式
+// function checkPhone(){
+// let phoneValue=document.getElementById("phone");
+//     phoneValue.addEventListener("blur",(e)=>{
+//         let value =e.target.value;
+//         let checkInput=/(09)+[0-9]{8}/
+//         if (!value.match(checkInput)){
+//            if(document.getElementById("errorPhone")){//若已有errorP則移除
+//             phoneValue.parentNode.removeChild(phoneValue.parentNode.lastChild);
+//            }
+//             let errorP=document.createElement("p");
+//             setAttributes(errorP,{"style":"color:#448899;","id":"errorPhone"});//call setAttributes
+//             errorP.textContent="手機格式錯誤，請重新輸入"
+//             phoneValue.parentNode.appendChild(errorP)
+//         }else{
+//             if(document.getElementById("errorPhone")){
+//                 phoneValue.parentNode.removeChild(phoneValue.parentNode.lastChild);
+//             }
+//         }
+//     })
+// }
 
 //檢查信用卡帳號
 // creditCard.addEventListener("blur",(e)=>{

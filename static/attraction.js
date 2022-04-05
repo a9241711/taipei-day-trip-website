@@ -4,8 +4,8 @@ let attractionData
 // 輪播圖片設定
 let slideIndex=1;
 
-let atttractionUrl =location.href; //取得網址
-let url=atttractionUrl.split("/")[atttractionUrl.split("/").length - 1] //取最後ID值
+let attractionUrl =location.href; //取得網址
+let url=attractionUrl.split("/")[attractionUrl.split("/").length - 1] //取最後ID值
 //Model區 取得資料
 //過濾掉不必要的字符
 function filterUrl(str){
@@ -49,6 +49,7 @@ async function postBooking(attractionId,date,time,price){
 //view區 render畫面至html
 //景點資訊
 function getIdData (){
+    showEffect();
     // let id =1;
     //取得HTML標籤
     let attractionImge=document.querySelector(".attractionImge");//圖片element
@@ -89,6 +90,7 @@ function getIdData (){
         divDot.appendChild(dotSpan)
         attractionImge.appendChild(imageDiv);
     }
+    hideEffect();
 }
 
 //選擇方向鍵時顯示圖片
@@ -102,6 +104,7 @@ function currentSlide(n){
 }
 //顯示圖片function
 async function showSlide(slideNumber){
+    
     await new Promise((resolve,reject)=>{
         let i ;
         let slide=document.querySelectorAll(".slide") //取得所有.slide元素
@@ -166,12 +169,12 @@ function getBookingPost(){
         }if (data["message"]=="尚未登入" ){
             signin.setAttribute("style", "display:block; transform: scale(1); ");
             signinForm.setAttribute("style", "animation:formMove 1s");
-            popUpController();
+            // popUpController();
             return
         }
         if(data["error"] ){
             let attractionBook=document.querySelector(".attraction-book").children[2].lastElementChild;
-            attractionBook.insertAdjacentHTML("afterend", `<p style="color:red">${data["message"]}</p>`);
+            attractionBook.insertAdjacentHTML("afterend", `<p style="color:#448899; margin-top:20px;">${data["message"]}</p>`);
             flag=false;
         }
     })
@@ -187,11 +190,9 @@ function minDate(){
 //Controller區，操作function
 //畫面initial
 async function getInitail(){
-    showEffect()
     await getIdFetch();
     getIdData();
     showSlide(slideIndex);
-    hideEffect()
 }
 
 
