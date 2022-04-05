@@ -1,6 +1,6 @@
 //***Model***//
 //POST fetch to Server
-async function postOrderFecth(prime,getBookingPrice,getBookingAttrction,getBookingDate,getBookingTime,connectionNameValue,connectionEmailValue,connectionPhoneValue){
+async function postOrderFecth(prime,getBookingPrice,getBookingAttrction,getBookingDate,getBookingTime,connectionName,connectionEmail,connectionPhone){
     try{
         let postOrder=await fetch("/api/orders",{
             method:"POST",
@@ -16,9 +16,9 @@ async function postOrderFecth(prime,getBookingPrice,getBookingAttrction,getBooki
                         time:getBookingTime,
                 },                
                 contact: {
-                        name: connectionNameValue,
-                        email: connectionEmailValue,
-                        phone: connectionPhoneValue,
+                        name: connectionName,
+                        email: connectionEmail,
+                        phone: connectionPhone,
                     },
                     })
                 })
@@ -112,6 +112,9 @@ function submitonClick() {
             <p style='color:#448899;'>${successMes}頁面重新導向...</p>
             `;
             window.location.href=`/thankyou?number=${orderNumber}`;
+            await fetchDeleteBooking();
+            
+            
         }
         })
 }

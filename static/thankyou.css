@@ -15,9 +15,10 @@ main {
     justify-content: center;
 }
 
+/* 
 .thankyouDivText {
     width: 100%;
-}
+} */
 
 .thankyouDiv>p {
     display: inline-block;

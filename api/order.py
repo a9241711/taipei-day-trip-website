@@ -26,7 +26,6 @@ def postOrder():
     orderRequest=request.get_json()
     userId=userdata["id"]
     currentTime=now.strftime("%Y%m%d%H%M%S")
-    # print("currentTime",currentTime,userdata,"orderRequest",orderRequest)
     prime=orderRequest["prime"]
     contactPhone=orderRequest["contact"]["phone"]
     contactName=orderRequest["contact"]["name"]

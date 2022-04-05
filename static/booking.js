@@ -55,6 +55,7 @@ async function getBooking(){
             main.append(noneBooking);
             bookingFoot.style.height= "100%";
             hideEffect();
+            return
         }
         if(getBookingData["error"] ){
             alert("請先登入帳號");

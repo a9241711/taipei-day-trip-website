@@ -16,9 +16,9 @@ async function getOrderFetch(getThankUrl){
 
 async function getThankyouPage(){
     hideEffect()
-    let data=await getOrderFetch(getThankUrl);
-    console.log(data);
-    let orderName=data["data"]["contact"]["name"];
+    let data=await getOrderFetch(getThankUrl);//取得訂單資訊
+    let userData=await getSignInFetch();//取得會員資訊
+    let userName=userData["name"]
     let orderDate=data["data"]["trip"]["date"];
     let orderPrice=data["data"]["price"];
     let orderAttraction=data["data"]["trip"]["attraction"]["name"];
@@ -33,7 +33,7 @@ async function getThankyouPage(){
 
     let thankyouDiv =document.querySelector(".thankyouDiv");
     thankyouDiv.innerHTML=`
-    <h3 >${orderName} 先生/小姐您好，感謝您預定行程：${orderAttraction}</h3>
+    <h3 >${userName} 先生/小姐您好，感謝您預定行程：${orderAttraction}</h3>
     <div class="thankyouDivText">
     <p >您的訂單明細如下：</p>
     <p>日期：${orderDate}</p>
