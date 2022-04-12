@@ -319,24 +319,13 @@ def getALLOrder_data(userid):
 
 
 #POST ORDER
-def postOrder_data(currentTime,attractionid,userid,contactName,contactEmail,contactPhone,date,price,time,status):
+def postOrder_data(orderNumber,attractionid,userid,contactName,contactEmail,contactPhone,date,price,time,status):
     try:
         mysqlConnection=connection_pool.get_connection()
         mycursor=mysqlConnection.cursor()
-        isOrderExisting="SELECT * from orderdata WHERE number=%s" %(currentTime)
-        mycursor.execute(isOrderExisting)
-        findOrderData=mycursor.fetchone() #找到現有訂單
-        # print("modelCurrentTime",currentTime,"findOrderData",findOrderData)
-        if findOrderData:
-            updateData="UPDATE orderdata SET status=%s WHERE number=%s"
-            updateValue=(status,currentTime)
-            # print("updateValue",updateValue)
-            mycursor.execute( updateData,updateValue)
-            mysqlConnection.commit()
-            return jsonify({"status":status,"message":"update success"})
         #存入order Table
         orderInsert="""INSERT INTO orderdata (number,attractionid,userid,contactname,contactemail,contactphone,tripdate,tripprice,triptime,status) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
-        orderdata=(currentTime,attractionid,userid,contactName,contactEmail,contactPhone,date,price,time,status)
+        orderdata=(orderNumber,attractionid,userid,contactName,contactEmail,contactPhone,date,price,time,status)
         print("orderdata",orderdata)
         mycursor.execute(orderInsert,orderdata)
         mysqlConnection.commit()
