@@ -89,6 +89,7 @@ header{
     height: 34px;
     display: flex;
     justify-content: flex-end;
+    text-align: center;
 }
 .header-nav a{
     text-decoration: none;
@@ -286,4 +287,9 @@ footer{
       width: 100%;
       bottom: 0;
   }
+
+.header-nav a{
+    margin: 0 0 0 5px;
+
+}
 }
