@@ -226,7 +226,6 @@ def deleteBooking_date(userId):
         mycursor=mysqlConnection.cursor()
         mycursor.execute("DELETE from booking WHERE userid=%s" % (userId,))
         mysqlConnection.commit()
-        print(mycursor.rowcount, "record(s) deleted")
         response={"ok": True}
         return response
     except Exception as e:
