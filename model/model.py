@@ -297,6 +297,7 @@ def getALLOrder_data(userid):
         mycursor=mysqlConnection.cursor()
         mycursor.execute("SELECT orderdata.contactname,orderdata.contactemail,orderdata.contactphone,orderdata.tripdate,orderdata.tripprice,orderdata.triptime,orderdata.status,attraction.name,attraction.address,attraction.images,member.id from orderdata JOIN attraction ON orderdata.attractionid=attraction.id JOIN member ON orderdata.userid=member.id WHERE orderdata.userid=%s AND orderdata.status=0"%(userid))#根據MemberId找出ALL order資料
         orderRawData=mycursor.fetchall() #找出該member的所有景點
+        print("orderRawData",orderRawData)
         if orderRawData:
             orderDataArr=[]
             # print(type (orderRawData) )
@@ -336,6 +337,7 @@ def postOrder_data(currentTime,attractionid,userid,contactName,contactEmail,cont
         #存入order Table
         orderInsert="""INSERT INTO orderdata (number,attractionid,userid,contactname,contactemail,contactphone,tripdate,tripprice,triptime,status) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
         orderdata=(currentTime,attractionid,userid,contactName,contactEmail,contactPhone,date,price,time,status)
+        print("orderdata",orderdata)
         mycursor.execute(orderInsert,orderdata)
         mysqlConnection.commit()
         return jsonify({"message":"Commit data success"})

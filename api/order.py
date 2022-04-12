@@ -36,7 +36,8 @@ def postOrder():
     userdata=jwt.decode(jwtCookie, jwtKey, algorithms='HS256') #cookie decode
     orderRequest=request.get_json()
     userId=userdata["id"]
-    currentTime=now.strftime("%Y%m%d%H%M%S")
+    currentTime=now.strftime("%Y%m%d%H%M%S%f")
+    orderNumber=currentTime+currentTime
     prime=orderRequest["prime"]
     contactPhone=orderRequest["contact"]["phone"]
     contactName=orderRequest["contact"]["name"]
@@ -56,7 +57,7 @@ def postOrder():
     date=orderInfo["date"]
     time=orderInfo["time"]
     status=1 #尚未付款status=1
-    postOrder_data(currentTime,attractionid,userId,contactName,contactEmail,contactPhone,date,price,time,status)#先傳入DB記錄訂單資訊
+    postOrder_data(orderNumber,attractionid,userId,contactName,contactEmail,contactPhone,date,price,time,status)#先傳入DB記錄訂單資訊
     tapPayHeaders={"Content-Type": "application/json","x-api-key":os.getenv("PARTNERKEY")}
     tapPaydata={
         "prime":prime,        
