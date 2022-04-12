@@ -5,7 +5,6 @@ from datetime import datetime
 from model.model import postOrder_data,getOrder_data,getALLOrder_data
 
 load_dotenv()
-now =datetime.now()
 api_order =Blueprint("api_order",__name__)
 jwtKey=os.getenv("JWTKEY")
 
@@ -36,6 +35,7 @@ def postOrder():
     userdata=jwt.decode(jwtCookie, jwtKey, algorithms='HS256') #cookie decode
     orderRequest=request.get_json()
     userId=userdata["id"]
+    now =datetime.now()
     currentTime=now.strftime("%Y%m%d%H%M%S%f")
     orderNumber=currentTime+currentTime
     prime=orderRequest["prime"]

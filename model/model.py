@@ -326,7 +326,6 @@ def postOrder_data(orderNumber,attractionid,userid,contactName,contactEmail,cont
         #存入order Table
         orderInsert="""INSERT INTO orderdata (number,attractionid,userid,contactname,contactemail,contactphone,tripdate,tripprice,triptime,status) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
         orderdata=(orderNumber,attractionid,userid,contactName,contactEmail,contactPhone,date,price,time,status)
-        print("orderdata",orderdata)
         mycursor.execute(orderInsert,orderdata)
         mysqlConnection.commit()
         return jsonify({"message":"Commit data success"})
