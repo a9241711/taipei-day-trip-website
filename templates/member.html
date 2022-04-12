@@ -1,0 +1,29 @@
+{% extends "base.html"%}
+{%block title%}Index{%endblock%}
+{% block css%}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href={{ url_for('static', filename='member.css' ) }}>{% endblock%}
+{%block main%}
+<main>
+    <div class="member-content">
+        <h3 >會員資訊：</h3>
+        <div class="member-info">
+        </div>
+        <div class="member-order">
+            <h3 >已預訂行程：</h3>
+            <div class="order-item">
+                <table class="order-table">
+                    <tr>
+                      <th>預定景點</th>
+                      <th>景點地址</th>
+                      <th>預定日期</th>
+                      <th>預定時間</th>
+                      <th>預定金額</th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>  
+</main>
+{% endblock %}
+{% block js%}<script src={{ url_for('static', filename='member.js' ) }}></script>{% endblock%}

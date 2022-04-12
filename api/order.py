@@ -2,7 +2,7 @@ from flask import Blueprint,jsonify,request,make_response,session
 import os,json,requests,re,jwt
 from dotenv import load_dotenv
 from datetime import datetime
-from model.model import postOrder_data,getOrder_data
+from model.model import postOrder_data,getOrder_data,getALLOrder_data
 
 load_dotenv()
 now =datetime.now()
@@ -16,6 +16,17 @@ def getOrder(orderNumber):
         return make_response(jsonify({ "error": True,"message": "未登入"}),403)
     reponse=getOrder_data(orderNumber)
     return make_response(jsonify(reponse)),{"Access-Control-Allow-Origin": "*"}
+
+#取得指定member id的所有訂單編號
+@api_order.route("/order", methods=["GET"])
+def getAllOrder():
+    jwtCookie=request.cookies.get("token")
+    if not jwtCookie:
+        return make_response(jsonify({ "error": True,"message": "未登入"}),403)
+    decodeJwt=jwt.decode(jwtCookie, jwtKey, algorithms='HS256')
+    useId=decodeJwt["id"]
+    memberDatas=getALLOrder_data(useId)
+    return make_response(jsonify({"data":memberDatas})),{"Access-Control-Allow-Origin": "*"}
 
 @api_order.route("/orders",methods=["POST"])
 def postOrder():

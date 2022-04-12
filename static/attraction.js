@@ -95,7 +95,7 @@ function getIdData (){
 
 //選擇方向鍵時顯示圖片
 function plusSlides(n){
-    // console.log("number",n,"index",slideIndex)
+    console.log("number",n,"index",slideIndex)
     showSlide(slideIndex +=n);
 }
 //選擇dot時顯示圖片

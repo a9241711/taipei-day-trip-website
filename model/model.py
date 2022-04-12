@@ -117,6 +117,29 @@ def signUp_data(signName,signEmail,signPassword):
             mysqlConnection.rollback()
         closePool(mysqlConnection, mycursor)
 
+#修改密碼
+def updatePassword_data(signEmail,updatePassword):
+    try:    
+            mysqlConnection=connection_pool.get_connection()
+            mycursor=mysqlConnection.cursor()
+            mycursor.execute("SELECT email from member WHERE email=%s",(signEmail,))
+            finduser=mycursor.fetchone()
+            if finduser: #若帳號重複則返回錯誤
+                
+                update= "update member SET password=%s WHERE email=%s"
+                val=(signEmail,updatePassword)
+                mycursor.execute(update,val)
+                mysqlConnection.commit()#將使用者存入DB
+                response={"ok":True}
+                return response
+    except Exception as e:
+        print(e)
+        return jsonify({"error": True, "message": "伺服器內部錯誤"}, 500)
+    finally :
+        if mysqlConnection.in_transaction:
+            mysqlConnection.rollback()
+        closePool(mysqlConnection, mycursor)
+
 #取得預定行程GET
 def getBooking_data(userId):
     try:
@@ -215,7 +238,7 @@ def deleteBooking_date(userId):
             mysqlConnection.rollback()
         closePool(mysqlConnection,mycursor)
 
-#GET ORDER BY NUMBER
+#GET ORDER BY UIDNUMBER
 def getOrder_data(orderNumber):
     try:
         mysqlConnection=connection_pool.get_connection()
@@ -257,7 +280,6 @@ def getOrder_data(orderNumber):
                 "status": status
               }
             }
-        print(response)
         return response
 
     except Exception as e:
@@ -267,6 +289,33 @@ def getOrder_data(orderNumber):
         if mysqlConnection.in_transaction:
             mysqlConnection.rollback()
         closePool(mysqlConnection,mycursor)
+
+#GET ALL ORDER BY USERID
+def getALLOrder_data(userid):
+    try:
+        mysqlConnection=connection_pool.get_connection()
+        mycursor=mysqlConnection.cursor()
+        mycursor.execute("SELECT orderdata.contactname,orderdata.contactemail,orderdata.contactphone,orderdata.tripdate,orderdata.tripprice,orderdata.triptime,orderdata.status,attraction.name,attraction.address,attraction.images,member.id from orderdata JOIN attraction ON orderdata.attractionid=attraction.id JOIN member ON orderdata.userid=member.id WHERE orderdata.userid=%s AND orderdata.status=0"%(userid))#根據MemberId找出ALL order資料
+        orderRawData=mycursor.fetchall() #找出該member的所有景點
+        if orderRawData:
+            orderDataArr=[]
+            # print(type (orderRawData) )
+            for orderData in  orderRawData:
+                orderDataAll = dict(zip(mycursor.column_names,orderData))
+                parseImages=json.loads(orderDataAll["images"])[0]
+                orderDataAll["images"]=parseImages
+                orderDataArr.append(orderDataAll)
+            return orderDataArr
+        return None
+
+    except Exception as e:
+        print(e)
+        return jsonify({"error":True,"message":"伺服器內部錯誤"},500)
+    finally:
+        if mysqlConnection.in_transaction:
+            mysqlConnection.rollback()
+        closePool(mysqlConnection,mycursor)
+
 
 #POST ORDER
 def postOrder_data(currentTime,attractionid,userid,contactName,contactEmail,contactPhone,date,price,time,status):
