@@ -37,7 +37,7 @@ def postOrder():
     userId=userdata["id"]
     now =datetime.now()
     currentTime=now.strftime("%Y%m%d%H%M%S%f")
-    orderNumber=currentTime+currentTime
+    orderNumber=currentTime+userId
     prime=orderRequest["prime"]
     contactPhone=orderRequest["contact"]["phone"]
     contactName=orderRequest["contact"]["name"]
