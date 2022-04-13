@@ -11,6 +11,7 @@ let signup =document.querySelector(".signup");//註冊表單
 let signupA=document.querySelector(".signup-a");//轉換登入彈出頁面
 let signUpBtn=document.querySelector(".signUp-btn");//註冊送出按鈕
 let signOutBtn =document.querySelector(".signOut");//登出header
+let member =document.querySelector(".member");//會員中心
 let bookLink=document.querySelector(".book-link")
 //顯示文字相關變數
 let errorMessage //錯誤訊息
@@ -91,9 +92,11 @@ async function getUserView(){
             if(data["data"]!==null){
                 signLink.setAttribute("style","display:none;")
                 signOutBtn.setAttribute("style","display:block;")
+                member.setAttribute("style","display:block;")
              }else if(data["data"]==null){
                 signLink.setAttribute("style","display:block;")
                 signOutBtn.setAttribute("style","display:none;")
+                member.setAttribute("style","display:none;")
              }
     }
     
@@ -147,7 +150,7 @@ function signUpView(){
         })  
 }
 
-//登出畫面
+// //登出畫面
 function signOut(){
     signOutBtn.addEventListener(("click"),async(e)=>{
         e.preventDefault(); //        console.log("signout")

@@ -2,10 +2,9 @@ from flask import Blueprint,jsonify,request,make_response,session
 import os,json,requests,re,jwt
 from dotenv import load_dotenv
 from datetime import datetime
-from model.model import postOrder_data,getOrder_data
+from model.model import postOrder_data,getOrder_data,getALLOrder_data
 
 load_dotenv()
-now =datetime.now()
 api_order =Blueprint("api_order",__name__)
 jwtKey=os.getenv("JWTKEY")
 
@@ -17,6 +16,17 @@ def getOrder(orderNumber):
     reponse=getOrder_data(orderNumber)
     return make_response(jsonify(reponse)),{"Access-Control-Allow-Origin": "*"}
 
+#取得指定member id的所有訂單編號
+@api_order.route("/order", methods=["GET"])
+def getAllOrder():
+    jwtCookie=request.cookies.get("token")
+    if not jwtCookie:
+        return make_response(jsonify({ "error": True,"message": "未登入"}),403)
+    decodeJwt=jwt.decode(jwtCookie, jwtKey, algorithms='HS256')
+    useId=decodeJwt["id"]
+    memberDatas=getALLOrder_data(useId)
+    return make_response(jsonify({"data":memberDatas})),{"Access-Control-Allow-Origin": "*"}
+
 @api_order.route("/orders",methods=["POST"])
 def postOrder():
     jwtCookie=request.cookies.get("token")
@@ -25,7 +35,9 @@ def postOrder():
     userdata=jwt.decode(jwtCookie, jwtKey, algorithms='HS256') #cookie decode
     orderRequest=request.get_json()
     userId=userdata["id"]
+    now =datetime.now()
     currentTime=now.strftime("%Y%m%d%H%M%S")
+    orderNumber=int(str(currentTime)+str(userId))
     prime=orderRequest["prime"]
     contactPhone=orderRequest["contact"]["phone"]
     contactName=orderRequest["contact"]["name"]
@@ -44,8 +56,6 @@ def postOrder():
     price=orderInfo["price"]
     date=orderInfo["date"]
     time=orderInfo["time"]
-    status=1 #尚未付款status=1
-    postOrder_data(currentTime,attractionid,userId,contactName,contactEmail,contactPhone,date,price,time,status)#先傳入DB記錄訂單資訊
     tapPayHeaders={"Content-Type": "application/json","x-api-key":os.getenv("PARTNERKEY")}
     tapPaydata={
         "prime":prime,        
@@ -65,10 +75,10 @@ def postOrder():
     # print("ResposeFromTap",ResponseFromTap["status"])
     if(ResponseFromTap["status"]==0):#若TapPay回傳成功則回傳資料到SERVER，更新status=0
         status=ResponseFromTap["status"]
-        postOrder_data(currentTime,attractionid,userId,contactName,contactEmail,contactPhone,date,price,time,status)
+        postOrder_data(orderNumber,attractionid,userId,contactName,contactEmail,contactPhone,date,price,time,status)
         reponseToClient={
             "data": {
-            "number": currentTime,
+            "number": orderNumber,
             "payment": {
                 "status": status,
                  "message": "付款成功"

@@ -7,6 +7,7 @@
     <title>{%block title%}{% endblock %}</title>
     <link rel="stylesheet" href={{ url_for('static', filename='layout.css' ) }} >
     <link rel="stylesheet" href={{ url_for('static', filename='sign.css' ) }} >
+    
     {% block css%}{% endblock%}
 
 
@@ -52,7 +53,8 @@
       <div class="header-nav">
           <a href="" class="book-link">預定行程</a>
           <a href="" class="sign-link">登入/註冊</a>
-          <a href="" class="signOut">登出</a>
+          <a href="" class="signOut"><i class="fas fa-sign-out"></i>登出</a>
+          <a href="{{ url_for('member') }}" class="member"><i class="fa-solid fa-house-user"></i>會員</a>
       </div>
     </div>
     </header>
@@ -64,6 +66,7 @@
     </footer>
     <script src={{ url_for('static', filename='sign.js' ) }}></script>
       {% block js%}{% endblock%}
+    <script src="https://kit.fontawesome.com/87b08cb92d.js" crossorigin="anonymous"></script>
 
 
 </body>
