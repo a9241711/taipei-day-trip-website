@@ -30,11 +30,14 @@ Test password : aA12345678
 Use Javascript Intersection Observer API to practice Lazy Loading and Infinite Scroll . By delaying, the required resources are loaded when needed, which reduces the loading burden of the browser and improves the user experience.  
 使用 Javascript 的 Intersection Observer API 實踐 Lazy Loading 和 Infinite Scroll。透過延遲，在需要時才載入所需資源，降低瀏覽器載入負擔，提升使用者體驗。  
 ![Imgur](https://i.imgur.com/3kUMFNl.gif)
-#### Keyword Search Use keywords can quickly find the attractions where you want
+#### Keyword Search 
+Use keywords to search for the attractions
 ![Imgur](https://i.imgur.com/zXL35FG.png)
-#### Member System The user needs to become a member to use the function of booking itinerary and payment
+#### Member System   
+Users are required to become a member before using the function of booking itinerary and payment.
 ![Imgur](https://i.imgur.com/R2Hc6Rf.png)
-#### Third-Party Payment Use TapPay to connect to a third-party cash flow system
+#### Third-Party Payment   
+Use TapPay to connect to a third-party cash flow system
 ![Imgur](https://i.imgur.com/aBf04pg.gif)
 #### Change Member's Password
 ![Imgur](https://i.imgur.com/0BLZMMS.png)
