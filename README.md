@@ -32,12 +32,15 @@ Use Javascript Intersection Observer API to practice Lazy Loading and Infinite S
 ![Imgur](https://i.imgur.com/3kUMFNl.gif)
 #### Keyword Search 
 Use keywords to search for the attractions
+使用關鍵字搜尋景點
 ![Imgur](https://i.imgur.com/zXL35FG.png)
 #### Member System   
-Users are required to become a member before using the function of booking itinerary and payment.
+Users are required to become a member before using the function of booking itinerary and payment.  
+僅會員才可預訂與付款
 ![Imgur](https://i.imgur.com/R2Hc6Rf.png)
 #### Third-Party Payment   
 Use TapPay to connect to a third-party cash flow system
+第三方金流串接Tap Pay
 ![Imgur](https://i.imgur.com/aBf04pg.gif)
 #### Change Member's Password
 ![Imgur](https://i.imgur.com/0BLZMMS.png)
