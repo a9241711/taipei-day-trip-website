@@ -15,7 +15,6 @@ async function getPageData(page,keyword){
         return attractions=data
         }
     catch(message){
-        console.log(`${message}`);
         throw Error("Fetching was wrong");    
         } 
 }
@@ -145,7 +144,6 @@ async function handleIntersect(entries){
     if(page==null){
         return
     }
-        // console.log(entries[0].isIntersecting)
     if(entries[0].isIntersecting && ready){ 
             ready=false;
             showAttraction();     

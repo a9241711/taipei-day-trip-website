@@ -101,11 +101,9 @@ function submitonClick() {
         let getBookingTime=getBookingData["data"]["time"]
         //Post order to Server
         let data=await postOrderFecth(prime,getBookingPrice,getBookingAttrction,getBookingDate,getBookingTime,connectionName,connectionEmail,connectionPhone)
-        // console.log(data)
         if(data["error"]==true){//若回傳錯誤，則顯示錯誤訊息
             document.querySelector('#curl').innerHTML= `<p style='color:#448899;'>${data["message"]}</p>`
         }else{//若回傳成功則顯示成功訊息
-            // console.log(data);
             let successMes=data["data"]["payment"]["message"]
             orderNumber=data["data"]["number"]
             document.querySelector('#curl').innerHTML= `
