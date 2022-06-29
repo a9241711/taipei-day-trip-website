@@ -46,7 +46,6 @@ async function getMemberData(){
     let orderItems =document.querySelector(".order-item");
     let memberOrder=document.querySelector(".member-order");
     let bookingFoot=document.querySelector(".footer");//footer
-    console.log(getAllData)
     if(getAllData===null ){//若無訂單資訊，則顯示相關文字
         orderItems.style.display="none";
         let noneBooking=document.createElement("p");

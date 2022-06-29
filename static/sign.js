@@ -87,8 +87,7 @@ async function deleteSignFetch(){
 
 //取得使用者登入資訊
 async function getUserView(){
-            let data=await getSignInFetch() //console.log(data)
-            // console.log(data)
+            let data=await getSignInFetch() 
             if(data["data"]!==null){
                 signLink.setAttribute("style","display:none;")
                 signOutBtn.setAttribute("style","display:block;")
@@ -153,9 +152,8 @@ function signUpView(){
 // //登出畫面
 function signOut(){
     signOutBtn.addEventListener(("click"),async(e)=>{
-        e.preventDefault(); //        console.log("signout")
+        e.preventDefault();
         let res=await deleteSignFetch();
-        console.log(res)
         window.location.reload();
     }) 
 }
@@ -250,96 +248,3 @@ window.onload=function(){
 
 
 
-///整理前coding
-//登入操作
-// signInBtn.addEventListener("click",async(e)=>{
-//     e.preventDefault();
-//     let email =document.querySelector(".email").value;
-//     let password =document.querySelector(".password").value;
-//     // console.log(email,password)
-//     // fetch('/api/user',{
-//     //     method:"PATCH",
-//     //     body:JSON.stringify({ 
-//     //         email:email,
-//     //         password:password}),
-//     //     headers:{"Content-Type":"application/json; charset=UTF-8"},
-//     //     }).then((response)=>{
-//     //        return response.json();
-//     //     }).then((result)=>{
-            
-//     let data = await patchSignInFetch(email,password);
-//     console.log(data)
-//             if(data["ok"]==true){
-//                     successMeg="註冊成功，重新導向首頁"
-//                     showSignInMessage(successMeg)
-//                     window.location.reload();
-//             }else{
-//                 errorMessage="帳號密碼錯誤，請重新登入"
-//                 showSignInMessage(errorMessage)
-//             }
-//         })
-        // }).catch((e)=>{console.log(e)});
-// })
-
-//註冊
-
-// signUpBtn.addEventListener(("click"),async (e)=>{
-//     e.preventDefault();
-//     let signName=document.querySelector(".signName").value;
-//     let signEmail=document.querySelector(".signEmail").value;
-//     let signPassword=document.querySelector(".signPassword").value;
-
-//     // console.log(signName,signEmail)
-//     if (signName===""||signEmail===""||signPassword ===""){
-//         errorMessage="欄位不得空白" ;
-//         showSignUpMessage(errorMessage);
-//         return
-//     }
-    // fetch("/api/user",{
-    //     method:"POST",
-    //     body:JSON.stringify({
-    //         signName:signName,
-    //         signEmail:signEmail,
-    //         signPassword:signPassword
-    //     }),
-    //     headers:{"Content-Type":"application/json; Charset=UTF-8"}    
-    // }).then((response)=>{
-    //     return response.json();
-    // }).then((data)=>{
-        // console.log(data)
-    //     let data = await postSignUpFetch(signName,signEmail,signPassword);
-    //     if(data["error"]==true){
-    //         errorMessage=data.message;
-    //         if(errorMessage=="信箱格式錯誤"){
-    //             showSignUpMessage(errorMessage)
-    //         }
-    //         if(errorMessage=="密碼需符合8碼數字+英文大小寫各一"){
-    //             showSignUpMessage(errorMessage)
-    //         }
-    //         if(errorMessage=="帳號已註冊"){
-    //             showSignUpMessage(errorMessage)
-    //         }
-    //     }
-    //     else{
-    //         successMeg="成功註冊"
-    //         showSignUpMessage(successMeg)
-    //         }
-    // })
-// })
-
-
-//登出
-
-// function signOut(){
-//     signOutBtn.addEventListener(("click"),async(e)=>{
-//         e.preventDefault();
-//         console.log("signout")
-        // fetch("/api/user",{
-        //     method:"DELETE"}).then((response)=>{
-        //     return response.json()}).then((data)=>{
-            // alert("已登出，並導向首頁");
-        // await deleteSignFetch();
-        // window.location.reload();
-        // })
-//     }) 
-// }

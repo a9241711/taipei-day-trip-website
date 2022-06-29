@@ -13,7 +13,6 @@ function filterUrl(str){
     return str.replace(pattern,"");
 }
 let urlNum=filterUrl(url);
-console.log(urlNum);
 //fetch
 async function getIdFetch(){
     try{
@@ -60,7 +59,6 @@ function getIdData (){
     let introAddress =document.querySelector(".introAddress");
     let introTrans= document.querySelector(".introTrans");
     let divDot=document.querySelector(".div-dot");
-    // //取得fetch data console.log(attractionId)
     let attractionImages=attractionData["data"]["images"];
     let attractionTitleValue=attractionData["data"]["name"];
     let attractionCateValue=attractionData["data"]["category"];
@@ -95,7 +93,6 @@ function getIdData (){
 
 //選擇方向鍵時顯示圖片
 function plusSlides(n){
-    console.log("number",n,"index",slideIndex)
     showSlide(slideIndex +=n);
 }
 //選擇dot時顯示圖片
@@ -129,7 +126,6 @@ async function showSlide(slideNumber){
 function selectTime(){
     let timSelected=document.querySelector('input[name="time"]:checked').value;//取得input value
     let selectedTime=document.getElementById("selected-time");
-    // console.log(timSelected);
     selectedTime.textContent="新台幣"+timSelected+"元";
 }
 
@@ -162,7 +158,6 @@ function getBookingPost(){
         }else{
             time="afternoon";
         }
-        console.log(attractionId,date,price,time)
         let data= await postBooking(attractionId,date,time,price);
         if(data["ok"]==true){
             window.location="/booking"
